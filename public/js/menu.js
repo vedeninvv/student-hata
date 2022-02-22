@@ -1,4 +1,6 @@
-(function() {
+window.addEventListener('load', menu);
+
+function menu() {
     let page = document.location.toString()
 
     let menu = document.getElementsByClassName("menu")[0]
@@ -12,4 +14,4 @@
             menuOptions[i].classList.add("menu__item_active");
         }
     }
-})()
+}
