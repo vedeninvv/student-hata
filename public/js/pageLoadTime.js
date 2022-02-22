@@ -1,4 +1,4 @@
-window.onload = loadTime;
+window.addEventListener('load', loadTime);
 
 function loadTime() {
     let pageLoadTime = (window.performance.timing.domContentLoadedEventEnd - window.performance.timing.connectStart) / 1000
