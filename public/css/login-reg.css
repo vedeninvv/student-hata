@@ -1,0 +1,21 @@
+html, body{
+    height: 100%;
+    background-color: #a98e28;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.log-reg-box {
+    width: 40%;
+    background-color: #FFD639;
+    padding: 5%;
+    border-radius: 30px;
+}
+
+.log-reg-box button {
+    float: right;
+}
