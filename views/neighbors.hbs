@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {{> common_css_js}}
+    <link href="/css/flat-neighbor.css" rel="stylesheet">
+    <title>Соседи</title>
+    <script src="/js/loadStudents.js"></script>
+</head>
+<body>
+
+{{> header}}
+
+<main>
+    <div class="flat-neighbors-list">
+
+    </div>
+</main>
+
+<template id="neighbors-list-elem-template">
+    <div class="flat-neighbors-list__elem">
+        <img src="/media/neighbor-pic-example.png">
+        <div class="characteristic-list">
+
+        </div>
+    </div>
+</template>
+
+<template id="characteristic-list-line-template">
+    <div class="characteristic-list-line">
+        <span class="characteristic-list-line__title"></span>
+        <span class="characteristic-list-line__value"></span>
+    </div>
+</template>
+
+{{> footer}}
+
+</body>
+</html>

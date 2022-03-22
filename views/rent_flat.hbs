@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {{> common_css_js}}
+    <title>Сдать квартиру</title>
+</head>
+<body>
+
+{{> header}}
+
+<main>
+    <form class="questionnaire-form">
+        <div class="input-block">
+            <label for="address" class="form-label">Адрес</label>
+            <input type="text" class="form-control" id="address" name="address" placeholder="Приморский район, улица..."
+                   autocomplete="off">
+        </div>
+        <div class="input-block">
+            <label for="price" class="form-label">Цена</label>
+            <input id="price" type="number" value="20000" min="0" max="1000000000" step="1"
+                   class="form-control">
+        </div>
+        <div class="input-block">
+            <label for="numNeighbors" class="form-label">Макс. число жильцов</label>
+            <input id="numNeighbors" type="number" value="1" min="1" max="6" step="1"
+                   class="form-control">
+        </div>
+        <div class="input-block">
+            <label for="description" class="form-label">Email address</label>
+            <textarea class="form-control-textarea" id="description" name="description"
+                      placeholder="Квартира с хорошим ремонтом..." autocomplete="off" rows="4"></textarea>
+        </div>
+        <div class="input-block">
+            <label for="preferred_university" class="form-label">Предпочитаемые университеты</label>
+            <input type="text" class="form-control" id="preferred_university" name="preferred_university"
+                   placeholder="ИТМО" autocomplete="off">
+        </div>
+        <div class="input-block">
+            <label for="unpreferred_university" class="form-label">Нежелательные университеты</label>
+            <input type="text" class="form-control" id="unpreferred_university" name="unpreferred_university"
+                   placeholder="СибАДИ" autocomplete="off">
+        </div>
+        <div class="input-block">
+            <label for="restrictions" class="form-label">Требования к съемщикам</label>
+            <textarea class="form-control-textarea" id="restrictions" name="restrictions"
+                      placeholder="Животные не разрешены" autocomplete="off" rows="4"></textarea>
+        </div>
+        <div class="input-block">
+            <label for="photo" class="form-label">Фото</label>
+            <input class="form-control" type="file" id="photo">
+        </div>
+        <button type="button" class="btn-save">Сохранить</button>
+    </form>
+</main>
+
+{{> footer}}
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+.flat-neighbors-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flat-neighbors-list__elem{
+    background-color: #333333;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 2% 0;
+    padding: 4%;
+    border-radius: 20px;
+}
+
+.flat-neighbors-list__elem img {
+    width: 20%;
+    height: 100%;
+    padding-right: 1.5%;
+    border-right: solid;
+    border-color: #FFFFFF;
+    border-width: 1px;
+}
+
+.characteristic-list {
+    padding: 2%;
+    font-size: 1.25em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: #FFD639;
+    border-radius: 20px;
+    margin-left: 1.5%;
+}
+
+.characteristic-list-line {
+    padding: 1%;
+    width: 100%;
+}
+
+.characteristic-list-line__title{
+    font-weight: bold;
+}

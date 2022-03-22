@@ -24,7 +24,9 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<p>Работа выполнена студентом:</p>
+<p>Веденин Вадим</p>
+<p>Группа: M33031</p>
 
 ## Installation
 
