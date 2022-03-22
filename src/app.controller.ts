@@ -8,71 +8,65 @@ export class AppController {
 
   @Get(["/", "/index"])
   @Render("index")
-  root() {}
+  root() {
+  }
 }
 
 @Controller()
 export class FlatsController {
-  constructor(private readonly appService: AppService) {
+  constructor() {
   }
 
   @Get("/flats")
   @Render("flats")
   flats() {
-    return;
   }
 
   @Get("/rent_flat")
   @Render("rent_flat")
   rentFlat() {
-    return;
   }
 }
 
 @Controller()
 export class AuthenticationController {
-  constructor(private readonly appService: AppService) {
+  constructor() {
   }
 
   @Get("/login")
   @Render("login")
   login() {
-    return;
   }
 
   @Get("/registration")
   @Render("registration")
   registration() {
-    return;
   }
 }
 
 @Controller()
 export class NeighborsController {
-  constructor(private readonly appService: AppService) {
+  constructor() {
   }
 
   @Get("/neighbors")
   @Render("neighbors")
   neighbors() {
-    return;
   }
 
   @Get("/neighbor_form")
   @Render("neighbor_form")
   neighborForm() {
-    return;
   }
 }
 
 @Controller("/todoList")
 export class TodoListController {
-  constructor(private readonly appService: AppService) {
+  constructor() {
   }
 
   @Get()
   @Render("todoList")
   todoList() {
-    return;
   }
 }
