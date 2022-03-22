@@ -1,89 +1,77 @@
-import { Controller, Get, Render } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Render } from "@nestjs/common";
+import { AppService } from "./app.service";
 
-@Controller('/index')
+@Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  @Render('index')
-  root() {
-    return;
+  constructor(private readonly appService: AppService) {
   }
+
+  @Get(["/", "/index"])
+  @Render("index")
+  root() {}
 }
 
-@Controller('/flats')
+@Controller()
 export class FlatsController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) {
+  }
 
-  @Get()
-  @Render('flats')
+  @Get("/flats")
+  @Render("flats")
   flats() {
     return;
   }
-}
 
-@Controller('/login')
-export class LoginController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  @Render('login')
-  login() {
-    return;
-  }
-}
-
-@Controller('/neighbor_form')
-export class NeighborFormController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  @Render('neighbor_form')
-  neighborForm() {
-    return;
-  }
-}
-
-@Controller('/neighbors')
-export class NeighborsController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  @Render('neighbors')
-  neighbors() {
-    return;
-  }
-}
-
-@Controller('/registration')
-export class RegistrationController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  @Render('registration')
-  registration() {
-    return;
-  }
-}
-
-@Controller('/rent_flat')
-export class RentFlatController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  @Render('rent_flat')
+  @Get("/rent_flat")
+  @Render("rent_flat")
   rentFlat() {
     return;
   }
 }
 
-@Controller('/todoList')
+@Controller()
+export class AuthenticationController {
+  constructor(private readonly appService: AppService) {
+  }
+
+  @Get("/login")
+  @Render("login")
+  login() {
+    return;
+  }
+
+  @Get("/registration")
+  @Render("registration")
+  registration() {
+    return;
+  }
+}
+
+@Controller()
+export class NeighborsController {
+  constructor(private readonly appService: AppService) {
+  }
+
+  @Get("/neighbors")
+  @Render("neighbors")
+  neighbors() {
+    return;
+  }
+
+  @Get("/neighbor_form")
+  @Render("neighbor_form")
+  neighborForm() {
+    return;
+  }
+}
+
+@Controller("/todoList")
 export class TodoListController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) {
+  }
 
   @Get()
-  @Render('todoList')
+  @Render("todoList")
   todoList() {
     return;
   }
