@@ -11,37 +11,72 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  email     String     @unique
-  password  String
-  name      String
-  surname   String
-  flatPosts FlatPost[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String
+  account       Account?
+  flatPosts     FlatPost[]
+  NeighbourForm NeighbourForm?
+}
+
+model Account {
+  id           Int
+  name         String
+  surname      String
+  genderId     Int
+  gender       Gender @relation(fields: [genderId], references: [id])
+  contactEmail String
+  phone        String
+  userId       Int    @unique
+  user         User   @relation(fields: [userId], references: [id])
 }
 
 model FlatPost {
-  id                      Int                  @id @default(autoincrement())
+  id                      Int             @id @default(autoincrement())
   address                 String
   price                   Int
   maxPeople               Int
   description             String
   preferredUniversities   String
   undesirableUniversities String
-  author                  User                 @relation(fields: [authorId], references: [id])
+  requirements            String
+  photos                  FlatPostPhoto[]
+  author                  User            @relation(fields: [authorId], references: [id])
   authorId                Int
-  GendersOnFlatPosts      GendersOnFlatPosts[]
+}
+
+model FlatPostPhoto {
+  id         Int      @id @default(autoincrement())
+  photo      Bytes
+  flatPostId Int
+  flatPost   FlatPost @relation(fields: [flatPostId], references: [id])
 }
 
 model Gender {
-  id                 Int                  @id @default(autoincrement())
-  genderName         String               @unique
-  GendersOnFlatPosts GendersOnFlatPosts[]
+  id                               Int                                @id @default(autoincrement())
+  genderName                       String                             @unique
+  accountGender                    Account[]
+  preferredGendersOnNeighbourForms PreferredGendersOnNeighbourForms[]
 }
 
-model GendersOnFlatPosts {
-  id         Int      @id @default(autoincrement())
-  flatPostId Int
-  flatPost   FlatPost @relation(fields: [flatPostId], references: [id])
-  genderId   Int
-  gender     Gender   @relation(fields: [genderId], references: [id])
+model NeighbourForm {
+  id                               Int                                @id @default(autoincrement())
+  university                       String
+  faculty                          String
+  preferredPrice                   Int
+  prederredPeopleNum               Int
+  preferredArea                    String
+  preferredGendersOnNeighbourForms PreferredGendersOnNeighbourForms[]
+  requirementsForNeighbour         String
+  aboutMyself                      String
+  user                             User                               @relation(fields: [userId], references: [id])
+  userId                           Int                                @unique
+}
+
+model PreferredGendersOnNeighbourForms {
+  id              Int           @id @default(autoincrement())
+  NeighbourFormId Int
+  neighbourForm   NeighbourForm @relation(fields: [NeighbourFormId], references: [id])
+  genderId        Int
+  gender          Gender        @relation(fields: [genderId], references: [id])
 }
