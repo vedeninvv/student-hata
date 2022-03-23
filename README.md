@@ -3,7 +3,7 @@
 <p>Группа: M33031</p>
 
 # Сущности
-
+![Image alt](https://github.com/is-web-y23/student-hata/blob/lab3/schema.png)
 <ul>
 <li>User - хранит данные для авторизации.</li>
 <li>Account - связан с User связью one-to-one, хранит данные о человеке (Имя, фамилия, контакты, пол)</li>
