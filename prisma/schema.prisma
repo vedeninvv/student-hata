@@ -16,7 +16,7 @@ model User {
   password      String
   account       Account?
   flatPosts     FlatPost[]
-  NeighbourForm NeighbourForm?
+  neighbourForm NeighbourForm?
 }
 
 model Account {
@@ -32,51 +32,80 @@ model Account {
 }
 
 model FlatPost {
-  id                      Int             @id @default(autoincrement())
+  id                      Int                               @id @default(autoincrement())
   address                 String
   price                   Int
   maxPeople               Int
   description             String
-  preferredUniversities   String
-  undesirableUniversities String
+  preferredUniversities   FlatPostOnUniversityPreferred[]
+  undesirableUniversities FlatPostOnUniversityUndesirable[]
   requirements            String
   photos                  FlatPostPhoto[]
-  author                  User            @relation(fields: [authorId], references: [id])
+  author                  User                              @relation(fields: [authorId], references: [id])
   authorId                Int
 }
 
 model FlatPostPhoto {
   id         Int      @id @default(autoincrement())
-  photo      Bytes
+  name       String
+  path       String
   flatPostId Int
   flatPost   FlatPost @relation(fields: [flatPostId], references: [id])
 }
 
 model Gender {
-  id                               Int                                @id @default(autoincrement())
-  genderName                       String                             @unique
-  accountGender                    Account[]
-  preferredGendersOnNeighbourForms PreferredGendersOnNeighbourForms[]
+  id             Int                                @id @default(autoincrement())
+  genderName     String                             @unique
+  accountGender  Account[]
+  neighbourForms PreferredGendersOnNeighbourForms[]
 }
 
 model NeighbourForm {
-  id                               Int                                @id @default(autoincrement())
-  university                       String
-  faculty                          String
-  preferredPrice                   Int
-  prederredPeopleNum               Int
-  preferredArea                    String
-  preferredGendersOnNeighbourForms PreferredGendersOnNeighbourForms[]
-  requirementsForNeighbour         String
-  aboutMyself                      String
-  user                             User                               @relation(fields: [userId], references: [id])
-  userId                           Int                                @unique
+  id                       Int                                @id @default(autoincrement())
+  university               University                         @relation(fields: [universityId], references: [id])
+  universityId             Int
+  faculty                  String
+  preferredPrice           Int
+  prederredPeopleNum       Int
+  preferredArea            String
+  preferredGenders         PreferredGendersOnNeighbourForms[]
+  requirementsForNeighbour String
+  aboutMyself              String
+  user                     User                               @relation(fields: [userId], references: [id])
+  userId                   Int                                @unique
 }
 
 model PreferredGendersOnNeighbourForms {
-  id              Int           @id @default(autoincrement())
-  NeighbourFormId Int
-  neighbourForm   NeighbourForm @relation(fields: [NeighbourFormId], references: [id])
+  neighbourFormId Int
+  neighbourForm   NeighbourForm @relation(fields: [neighbourFormId], references: [id])
   genderId        Int
   gender          Gender        @relation(fields: [genderId], references: [id])
+
+  @@id([neighbourFormId, genderId])
+}
+
+model University {
+  id                   Int                               @id @default(autoincrement())
+  name                 String
+  flatPostsPreferred   FlatPostOnUniversityPreferred[]
+  flatPostsUndesirable FlatPostOnUniversityUndesirable[]
+  neighbourForms       NeighbourForm[]
+}
+
+model FlatPostOnUniversityPreferred {
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+  flatPostId   Int
+  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id])
+
+  @@id([flatPostId, universityId])
+}
+
+model FlatPostOnUniversityUndesirable {
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+  flatPostId   Int
+  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id])
+
+  @@id([flatPostId, universityId])
 }
