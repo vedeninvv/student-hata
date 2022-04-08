@@ -17,7 +17,12 @@
 - Account - связан с User связью one-to-one, хранит данные о человеке (Имя, фамилия, контакты, пол)
 - FlatPost - пост о квартире
 - FlatPostPhoto - фотография квартиры
-- NeighbourForm - анкета для поиска жильца. У одного человека может быть только одна анкета. Следовательно связь one-to-one с User
-- Gender - гендеры, с Account связь one-to-one (у одного человека не может быть два гендера). С NeighbourForm связь many-to-many, так как в анкете человек указывает гендеры, с которыми готов жить.
+- NeighbourForm - анкета для поиска жильца. У одного человека может быть только одна анкета. Следовательно связь
+  one-to-one с User
+- Gender - гендеры, с Account связь one-to-one (у одного человека не может быть два гендера). С NeighbourForm связь
+  many-to-many, так как в анкете человек указывает гендеры, с которыми готов жить.
 - PreferredGendersOnNeighborForms - таблица для связи many-to-many между NeighbourForm и Gender
+- University - сущность для представления университета. Связана с FlatPost связью many-to-many через две таблицы
+  FlatPostOnUniversityPreferred и FlatPostOnUniversityUndesirable для указания предпочитаемых и нежелательных
+  университетов потенциальных жильцов.
 
