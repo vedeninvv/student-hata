@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model User {
@@ -24,22 +25,22 @@ model Account {
   name         String
   surname      String
   genderId     Int
-  gender       Gender @relation(fields: [genderId], references: [id])
-  contactEmail String
-  phone        String
-  userId       Int    @unique
-  user         User   @relation(fields: [userId], references: [id])
+  gender       Gender  @relation(fields: [genderId], references: [id])
+  contactEmail String?
+  phone        String?
+  userId       Int     @unique
+  user         User    @relation(fields: [userId], references: [id])
 }
 
 model FlatPost {
   id                      Int                               @id @default(autoincrement())
   address                 String
   price                   Int
-  maxPeople               Int
-  description             String
+  maxPeople               Int?
+  description             String?
   preferredUniversities   FlatPostOnUniversityPreferred[]
   undesirableUniversities FlatPostOnUniversityUndesirable[]
-  requirements            String
+  requirements            String?
   photos                  FlatPostPhoto[]
   author                  User                              @relation(fields: [authorId], references: [id])
   authorId                Int
@@ -64,13 +65,13 @@ model NeighbourForm {
   id                       Int                                @id @default(autoincrement())
   university               University                         @relation(fields: [universityId], references: [id])
   universityId             Int
-  faculty                  String
-  preferredPrice           Int
-  prederredPeopleNum       Int
-  preferredArea            String
+  faculty                  String?
+  preferredPrice           Int?
+  prederredPeopleNum       Int?
+  preferredArea            String?
   preferredGenders         PreferredGendersOnNeighbourForms[]
-  requirementsForNeighbour String
-  aboutMyself              String
+  requirementsForNeighbour String?
+  aboutMyself              String?
   user                     User                               @relation(fields: [userId], references: [id])
   userId                   Int                                @unique
 }
