@@ -1,10 +1,6 @@
 import { Module } from "@nestjs/common";
 import {
   AppController,
-  AuthenticationController,
-  FlatsController,
-  NeighborsController,
-  TodoListController
 } from "./app.controller";
 import { AppService } from "./app.service";
 
@@ -12,10 +8,6 @@ import { AppService } from "./app.service";
   imports: [],
   controllers: [
     AppController,
-    FlatsController,
-    NeighborsController,
-    TodoListController,
-    AuthenticationController
   ],
   providers: [AppService]
 })

@@ -10,12 +10,6 @@ export class AppController {
   @Render("index")
   root() {
   }
-}
-
-@Controller()
-export class FlatsController {
-  constructor() {
-  }
 
   @Get("/flats")
   @Render("flats")
@@ -25,12 +19,6 @@ export class FlatsController {
   @Get("/rent_flat")
   @Render("rent_flat")
   rentFlat() {
-  }
-}
-
-@Controller()
-export class AuthenticationController {
-  constructor() {
   }
 
   @Get("/login")
@@ -42,12 +30,6 @@ export class AuthenticationController {
   @Render("registration")
   registration() {
   }
-}
-
-@Controller()
-export class NeighborsController {
-  constructor() {
-  }
 
   @Get("/neighbors")
   @Render("neighbors")
@@ -58,14 +40,8 @@ export class NeighborsController {
   @Render("neighbor_form")
   neighborForm() {
   }
-}
 
-@Controller("/todoList")
-export class TodoListController {
-  constructor() {
-  }
-
-  @Get()
+  @Get("/todoList")
   @Render("todoList")
   todoList() {
   }
