@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String
+  account       Account?
+  flatPosts     FlatPost[]
+  neighbourForm NeighbourForm?
+}
+
+model Account {
+  id           Int
+  name         String
+  surname      String
+  genderId     Int
+  gender       Gender  @relation(fields: [genderId], references: [id])
+  contactEmail String?
+  phone        String?
+  userId       Int     @unique
+  user         User    @relation(fields: [userId], references: [id])
+}
+
+model FlatPost {
+  id                      Int                               @id @default(autoincrement())
+  address                 String
+  price                   Int
+  maxPeople               Int?
+  description             String?
+  preferredUniversities   FlatPostOnUniversityPreferred[]
+  undesirableUniversities FlatPostOnUniversityUndesirable[]
+  requirements            String?
+  photos                  FlatPostPhoto[]
+  author                  User                              @relation(fields: [authorId], references: [id])
+  authorId                Int
+}
+
+model FlatPostPhoto {
+  id         Int      @id @default(autoincrement())
+  name       String
+  path       String
+  flatPostId Int
+  flatPost   FlatPost @relation(fields: [flatPostId], references: [id])
+}
+
+model Gender {
+  id             Int                                @id @default(autoincrement())
+  genderName     String                             @unique
+  accountGender  Account[]
+  neighbourForms PreferredGendersOnNeighbourForms[]
+}
+
+model NeighbourForm {
+  id                       Int                                @id @default(autoincrement())
+  university               University                         @relation(fields: [universityId], references: [id])
+  universityId             Int
+  faculty                  String?
+  preferredPrice           Int?
+  prederredPeopleNum       Int?
+  preferredArea            String?
+  preferredGenders         PreferredGendersOnNeighbourForms[]
+  requirementsForNeighbour String?
+  aboutMyself              String?
+  user                     User                               @relation(fields: [userId], references: [id])
+  userId                   Int                                @unique
+}
+
+model PreferredGendersOnNeighbourForms {
+  neighbourFormId Int
+  neighbourForm   NeighbourForm @relation(fields: [neighbourFormId], references: [id])
+  genderId        Int
+  gender          Gender        @relation(fields: [genderId], references: [id])
+
+  @@id([neighbourFormId, genderId])
+}
+
+model University {
+  id                   Int                               @id @default(autoincrement())
+  name                 String
+  flatPostsPreferred   FlatPostOnUniversityPreferred[]
+  flatPostsUndesirable FlatPostOnUniversityUndesirable[]
+  neighbourForms       NeighbourForm[]
+}
+
+model FlatPostOnUniversityPreferred {
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+  flatPostId   Int
+  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id])
+
+  @@id([flatPostId, universityId])
+}
+
+model FlatPostOnUniversityUndesirable {
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+  flatPostId   Int
+  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id])
+
+  @@id([flatPostId, universityId])
+}
