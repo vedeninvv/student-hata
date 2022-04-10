@@ -11,36 +11,6 @@ export class AppController {
   root() {
   }
 
-  @Get("/flats")
-  @Render("flats")
-  flats() {
-  }
-
-  @Get("/rent_flat")
-  @Render("rent_flat")
-  rentFlat() {
-  }
-
-  @Get("/login")
-  @Render("login")
-  login() {
-  }
-
-  @Get("/registration")
-  @Render("registration")
-  registration() {
-  }
-
-  @Get("/neighbors")
-  @Render("neighbors")
-  neighbors() {
-  }
-
-  @Get("/neighbor_form")
-  @Render("neighbor_form")
-  neighborForm() {
-  }
-
   @Get("/todoList")
   @Render("todoList")
   todoList() {
