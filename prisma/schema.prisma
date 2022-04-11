@@ -21,11 +21,11 @@ model User {
 }
 
 model Account {
-  id           Int
-  name         String
-  surname      String
-  genderId     Int
-  gender       Gender  @relation(fields: [genderId], references: [id])
+  id           Int     @id @default(autoincrement())
+  name         String?
+  surname      String?
+  genderId     Int?
+  gender       Gender? @relation(fields: [genderId], references: [id])
   contactEmail String?
   phone        String?
   userId       Int     @unique
