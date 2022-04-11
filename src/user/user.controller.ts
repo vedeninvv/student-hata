@@ -5,6 +5,7 @@ import { ChangePasswordDto } from "./dto/change-password.dto";
 import { ChangeEmailDto } from "./dto/change-email.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { ChangeAccountDto } from "./dto/change-account.dto";
+import { User } from "@prisma/client";
 
 // В 6 лабе userId будет получаться не прямой передачей в методе
 @ApiTags("user")
@@ -28,7 +29,7 @@ export class UserController {
   @ApiOperation({ summary: "Create new user and blank account, which connected with user by one-to-one" })
   @Post("/user")
   createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+    this.userService.createUser(createUserDto);
   }
 
   @ApiBearerAuth()
