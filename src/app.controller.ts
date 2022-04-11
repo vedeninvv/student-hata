@@ -1,5 +1,6 @@
-import { Controller, Get, Render } from "@nestjs/common";
+import { Controller, Get, Render, Res } from "@nestjs/common";
 import { AppService } from "./app.service";
+import { Response } from "express";
 
 @Controller()
 export class AppController {
@@ -7,7 +8,6 @@ export class AppController {
   }
 
   @Get(["/", "/index"])
-  @Render("index")
   root() {
   }
 
