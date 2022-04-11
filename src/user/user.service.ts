@@ -19,24 +19,26 @@ export class UserService {
     throw new NotImplementedException();
   }
 
-   async createUser(createUserDto: CreateUserDto): Promise<User> {
-     let user = await this.prisma.user.create({
-       data: {
-         email: createUserDto.email,
-         password: createUserDto.password
-       }
-     });
-     this.prisma.account.create({
-       data: {
-         name: "",
-         surname: "",
-         genderId: 0,
-         contactEmail: "",
-         phone: "",
-         userId: user.id
-       }
-     })
-   }
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    let user = await this.prisma.user.create({
+      data: {
+        email: createUserDto.email,
+        password: createUserDto.password
+      }
+    });
+    // this.prisma.account.create({
+    //   data: {
+    //     name: "",
+    //     surname: "",
+    //     genderId: 0,
+    //     contactEmail: "",
+    //     phone: "",
+    //     userId: user.id
+    //   }
+    // })
+
+    return user;
+  }
 
   async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId: number) {
     throw new NotImplementedException();
