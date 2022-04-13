@@ -8,6 +8,7 @@ export class AppController {
   }
 
   @Get(["/", "/index"])
+  @Render("index")
   root() {
   }
 
