@@ -12,10 +12,10 @@ export class UserService {
   }
 
   async changePassword(changePasswordDto: ChangePasswordDto, userId: number): Promise<boolean> {
-    const user = await this.prisma.user.findUnique({ where: { id: Number(userId) } });
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (user.password === changePasswordDto.oldPassword) {
       await this.prisma.user.update({
-        where: { id: Number(userId) },
+        where: { id: userId },
         data: { password: changePasswordDto.newPassword }
       });
       return true;
@@ -23,10 +23,10 @@ export class UserService {
     return false;
   }
 
-  async changeEmail(changeEmailDto: ChangeEmailDto, userId) {
-    const user = await this.prisma.user.findUnique({ where: { id: Number(userId) } });
+  async changeEmail(changeEmailDto: ChangeEmailDto, userId: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
     return this.prisma.user.update({
-      where: { id: Number(userId)},
+      where: { id: userId},
       data: { email: changeEmailDto.newEmail}
     })
   }
@@ -47,9 +47,9 @@ export class UserService {
     return user;
   }
 
-  async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId): Promise<Account> {
+  async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId: number): Promise<Account> {
     return this.prisma.account.update({
-      where: { userId: Number(userId) },
+      where: { userId: userId },
       data: {
         name: changeAccountDto.name,
         surname: changeAccountDto.surname,
@@ -61,6 +61,6 @@ export class UserService {
   }
 
   async getAccountByUserId(userId: number): Promise<Account> {
-    return this.prisma.account.findUnique({ where: { userId: Number(userId) } });
+    return this.prisma.account.findUnique({ where: { userId: userId } });
   }
 }

@@ -5,6 +5,8 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { LoggingInterceptor } from "./logging.interceptor";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import hbs = require("hbs");
+import { ValidationPipe } from "@nestjs/common";
+import { HttpExceptionFilter } from "./http-exception.filter";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -23,6 +25,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
+
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(process.env.PORT || 8080);
 }

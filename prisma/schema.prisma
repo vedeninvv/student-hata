@@ -41,18 +41,19 @@ model FlatPost {
   preferredUniversities   FlatPostOnUniversityPreferred[]
   undesirableUniversities FlatPostOnUniversityUndesirable[]
   requirements            String?
-  photos                  FlatPostPhoto[]
+  //photos                  FlatPostPhoto[]
   author                  User                              @relation(fields: [authorId], references: [id])
   authorId                Int
+  //FlatPostPhoto           FlatPostPhoto[]
 }
 
-model FlatPostPhoto {
-  id         Int      @id @default(autoincrement())
-  name       String
-  path       String
-  flatPostId Int
-  flatPost   FlatPost @relation(fields: [flatPostId], references: [id])
-}
+//model FlatPostPhoto {
+//id         Int      @id @default(autoincrement())
+//name       String
+//path       String
+//flatPostId Int
+//flatPost   FlatPost @relation(fields: [flatPostId], references: [id])
+//}
 
 model Gender {
   id             Int                                @id @default(autoincrement())
@@ -67,7 +68,7 @@ model NeighbourForm {
   universityId             Int
   faculty                  String?
   preferredPrice           Int?
-  prederredPeopleNum       Int?
+  preferredPeopleNum       Int?
   preferredArea            String?
   preferredGenders         PreferredGendersOnNeighbourForms[]
   requirementsForNeighbour String?
@@ -78,9 +79,9 @@ model NeighbourForm {
 
 model PreferredGendersOnNeighbourForms {
   neighbourFormId Int
-  neighbourForm   NeighbourForm @relation(fields: [neighbourFormId], references: [id])
+  neighbourForm   NeighbourForm @relation(fields: [neighbourFormId], references: [id], onDelete: Cascade)
   genderId        Int
-  gender          Gender        @relation(fields: [genderId], references: [id])
+  gender          Gender        @relation(fields: [genderId], references: [id], onDelete: Cascade)
 
   @@id([neighbourFormId, genderId])
 }
@@ -95,18 +96,18 @@ model University {
 
 model FlatPostOnUniversityPreferred {
   universityId Int
-  university   University @relation(fields: [universityId], references: [id])
+  university   University @relation(fields: [universityId], references: [id], onDelete: Cascade)
   flatPostId   Int
-  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id])
+  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id], onDelete: Cascade)
 
   @@id([flatPostId, universityId])
 }
 
 model FlatPostOnUniversityUndesirable {
   universityId Int
-  university   University @relation(fields: [universityId], references: [id])
+  university   University @relation(fields: [universityId], references: [id], onDelete: Cascade)
   flatPostId   Int
-  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id])
+  flatPost     FlatPost   @relation(fields: [flatPostId], references: [id], onDelete: Cascade)
 
   @@id([flatPostId, universityId])
 }

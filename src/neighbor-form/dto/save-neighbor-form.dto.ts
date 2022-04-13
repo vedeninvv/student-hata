@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsInt, IsPositive } from "class-validator";
 
 export class SaveNeighborFormDto {
   @ApiProperty()
@@ -6,8 +7,12 @@ export class SaveNeighborFormDto {
   @ApiProperty()
   faculty: string;
   @ApiProperty()
+  @IsInt()
+  @IsPositive()
   preferredPrice: number;
   @ApiProperty()
+  @IsInt()
+  @IsPositive()
   preferredPeopleNum: number;
   @ApiProperty()
   preferredArea: string;

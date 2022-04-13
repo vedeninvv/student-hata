@@ -1,11 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsInt, IsPositive, Min } from "class-validator";
 
 export class FlatPostDto {
   @ApiProperty()
   address: string;
   @ApiProperty()
+  @IsInt()
+  @IsPositive()
   price: number;
   @ApiProperty()
+  @IsInt()
+  @IsPositive()
   maxPeople: number;
   @ApiProperty()
   description: string;

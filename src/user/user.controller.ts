@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Render, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Render, Res } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { ChangePasswordDto } from "./dto/change-password.dto";
@@ -36,7 +36,7 @@ export class UserController {
   @ApiOperation({ summary: "Change password" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @Put("/user/:userId/password")
-  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Param("userId") userId: number) {
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Param("userId", new ParseIntPipe()) userId: number) {
     return await this.userService.changePassword(changePasswordDto, userId);
   }
 
@@ -44,7 +44,7 @@ export class UserController {
   @ApiOperation({ summary: "Change email" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @Put("/user/:userId/email")
-  async changeEmail(@Body() changeEmailDto: ChangeEmailDto, @Param("userId") userId: number) {
+  async changeEmail(@Body() changeEmailDto: ChangeEmailDto, @Param("userId", new ParseIntPipe()) userId: number) {
     return await this.userService.changeEmail(changeEmailDto, userId);
   }
 
@@ -52,7 +52,7 @@ export class UserController {
   @ApiOperation({ summary: "Change account info" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @Put("/user/:userId/account")
-  async changeAccountInfo(@Body() changeAccountDto: ChangeAccountDto, @Param("userId") userId: number) {
+  async changeAccountInfo(@Body() changeAccountDto: ChangeAccountDto, @Param("userId", new ParseIntPipe()) userId: number) {
     return await this.userService.changeAccountInfo(changeAccountDto, userId);
   }
 
@@ -60,10 +60,13 @@ export class UserController {
   @ApiOperation({ summary: "Show own user's account info" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @Get("/user/:userId/account")
-  async accountInfo(@Param("userId") userId: number, @Res() res: Response) {
+  async accountInfo(@Param("userId", new ParseIntPipe()) userId: number, @Res() res: Response) {
     const account = await this.userService.getAccountByUserId(userId)
-    res.render("account",
-      { account: account }
-    );
+    // res.render("account",
+    //   { account: account }
+    // );
+    res.status(HttpStatus.OK).json({
+      account: account
+    })
   }
 }

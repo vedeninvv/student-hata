@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsEmail } from "class-validator";
 
 export class ChangeAccountDto {
   @ApiProperty()
@@ -8,6 +9,7 @@ export class ChangeAccountDto {
   @ApiProperty()
   genderId: number;
   @ApiProperty()
+  @IsEmail()
   contactEmail: string;
   @ApiProperty()
   phone: string;
