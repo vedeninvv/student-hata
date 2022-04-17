@@ -30,6 +30,7 @@ model Account {
   phone        String?
   userId       Int     @unique
   user         User    @relation(fields: [userId], references: [id])
+  filled       Boolean @default(false)
 }
 
 model FlatPost {

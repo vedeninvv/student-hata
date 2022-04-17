@@ -9,52 +9,66 @@
 {{> header}}
 
 <main>
-  {{form.userId}}
-  <form class="questionnaire-form">
+  <form class="questionnaire-form" method="post">
     <div class="input-block">
+      <!--      <label for="university" class="form-label">Университет</label>-->
+      <!--      <input type="number" class="form-control" id="university" name="universityId" placeholder="ИТМО"-->
+      <!--             autocomplete="off" value="{{form.universityId}}">-->
       <label for="university" class="form-label">Университет</label>
-      <input type="text" class="form-control" id="university" name="university" placeholder="ИТМО"
-             autocomplete="off">
+      <select name="universityId">
+        {{#each universities}}
+          <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
     </div>
     <div class="input-block">
       <label for="faculty" class="form-label">Факультет</label>
       <input type="text" class="form-control" id="faculty" name="faculty" placeholder="ФИТИП"
-             autocomplete="off">
+             autocomplete="off" value="{{form.faculty}}">
     </div>
     <div class="input-block">
       <label for="preferred_price" class="form-label">Предпочитаемая цена</label>
-      <input id="preferred_price" type="number" value="20000" min="0" max="1000000000" step="1"
+      <input id="preferred_price" type="number" name="preferredPrice" value="{{form.preferredPrice}}" min="0"
+             max="1000000000" step="1"
              class="form-control">
     </div>
     <div class="input-block">
       <label for="preferred_numNeighbors" class="form-label">Предпочитаемое число жильцов</label>
-      <input id="preferred_numNeighbors" type="number" value="1" min="1" max="6" step="1"
+      <input id="preferred_numNeighbors" type="number" name="preferredPeopleNum" value="{{form.preferredPeopleNum}}"
+             min="1" max="6" step="1"
              class="form-control">
     </div>
     <div class="input-block">
       <label for="preferred_location" class="form-label">Предпочитаемый район</label>
-      <input type="text" class="form-control" id="preferred_location" name="preferred_location"
-             placeholder="Приморский район" autocomplete="off">
-    </div>
-    <div class="input-block">
-      <label for="gender" class="form-label">Пол</label>
-      <select class="form-control" aria-label="Default select example" id="gender">
-        <option selected>Не указано</option>
-        <option value="1">Мужской</option>
-        <option value="2">Женский</option>
-      </select>
+      <input type="text" class="form-control" id="preferred_location" name="preferredArea"
+             placeholder="Приморский район" autocomplete="off" value="{{form.preferredArea}}">
     </div>
     <div class="input-block">
       <label for="requirements" class="form-label">Требования к соседу</label>
-      <textarea class="form-control-textarea" id="requirements" name="requirements"
-                placeholder="Чистоплотность, ..." autocomplete="off" rows="4"></textarea>
+      <textarea class="form-control-textarea" id="requirements" name="requirementsForNeighbour"
+                placeholder="Чистоплотность, ..." autocomplete="off"
+                rows="4">{{form.requirementsForNeighbour}}</textarea>
     </div>
     <div class="input-block">
       <label for="about_myself" class="form-label">О себе</label>
-      <textarea class="form-control-textarea" id="about_myself" name="about_myself" autocomplete="off"
-                rows="4"></textarea>
+      <textarea class="form-control-textarea" id="about_myself" name="aboutMyself" autocomplete="off"
+                rows="4">{{form.aboutMyself}}</textarea>
     </div>
-    <button type="button" class="btn-save">Сохранить</button>
+    <!--    Как передать гендеры?..-->
+    <div class="input-block">
+<!--      <label for="preferredGenders" class="form-label">Предпочитаемые гендеры: </label>-->
+<!--      <select multiple name="preferredGenders">-->
+<!--        <option value="1">Male</option>-->
+<!--        <option value="0">Female</option>-->
+<!--      </select>-->
+      <label for="preferredGenders" class="form-label">Предпочитаемые гендеры: </label>
+      <select multiple name="preferredGenders">
+        {{#each genders}}
+          <option value="{{this.id}}">{{this.genderName}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <button type="submit" class="btn-save">Сохранить</button>
   </form>
 </main>
 

@@ -1,11 +1,14 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { SaveNeighborFormDto } from "./dto/save-neighbor-form.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { NeighbourForm } from "@prisma/client";
+import { UserService } from "../user/user.service";
+import { NeighbourFormWithAccountInfoDto } from "./dto/neighbour-form-with-account-info.dto";
+import { GenderService } from "../gender/gender.service";
 
 @Injectable()
 export class NeighbourFormService {
-  constructor(private prisma: PrismaService) {
+  constructor(private prisma: PrismaService, private userService: UserService, private genderService: GenderService) {
   }
 
   async getAllNeighbourForms(): Promise<NeighbourForm[]> {
@@ -56,5 +59,42 @@ export class NeighbourFormService {
     } catch (e) {
       return null;
     }
+  }
+
+  async getAllNeighbourFormsWithAccountInfo() {
+    const neighbourForms = await this.prisma.neighbourForm.findMany({
+      include: {
+        preferredGenders: true,
+        university: true
+      }
+    });
+    const allNeighbours = [];
+    for (let i = 0; i < neighbourForms.length; i++) {
+      const neighbourForm = neighbourForms[i];
+      const account = await this.userService.getAccountByUserId(neighbourForm.userId);
+      if (!account.filled) {
+        continue
+      }
+      const gender = await this.genderService.getGenderById(account.genderId);
+      let preferredGendersString = "";
+      for (let preferredGender in neighbourForm.preferredGenders) {
+        preferredGendersString += (await this.genderService.getGenderById(Number(preferredGender))).genderName + " ";
+      }
+      allNeighbours.push(new NeighbourFormWithAccountInfoDto(
+          account.name != null? account.name: "Не задано",
+          account.surname != null? account.surname: "Не задано",
+          gender.genderName != null? gender.genderName: "Не задано",
+          neighbourForm.university.name,
+          neighbourForm.faculty,
+          neighbourForm.preferredPrice,
+          neighbourForm.preferredPeopleNum,
+          neighbourForm.preferredArea,
+          neighbourForm.requirementsForNeighbour,
+          neighbourForm.aboutMyself,
+          preferredGendersString
+        )
+      );
+    }
+    return allNeighbours;
   }
 }

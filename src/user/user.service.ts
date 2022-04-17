@@ -1,10 +1,10 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ChangePasswordDto } from "./dto/change-password.dto";
 import { ChangeEmailDto } from "./dto/change-email.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { ChangeAccountDto } from "./dto/change-account.dto";
 import { PrismaService } from "../prisma/prisma.service";
-import { User, Account } from "@prisma/client";
+import { Account, User } from "@prisma/client";
 
 @Injectable()
 export class UserService {
@@ -26,25 +26,21 @@ export class UserService {
   async changeEmail(changeEmailDto: ChangeEmailDto, userId: number) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     return this.prisma.user.update({
-      where: { id: userId},
-      data: { email: changeEmailDto.newEmail}
-    })
+      where: { id: userId },
+      data: { email: changeEmailDto.newEmail }
+    });
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.prisma.user.create({
+    return this.prisma.user.create({
       data: {
         email: createUserDto.email,
-        password: createUserDto.password
+        password: createUserDto.password,
+        account: {
+          create: {}
+        }
       }
     });
-    await this.prisma.account.create({
-      data: {
-        name: "test",
-        userId: user.id
-      }
-    });
-    return user;
   }
 
   async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId: number): Promise<Account> {
@@ -55,9 +51,10 @@ export class UserService {
         surname: changeAccountDto.surname,
         genderId: changeAccountDto.genderId,
         contactEmail: changeAccountDto.contactEmail,
-        phone: changeAccountDto.phone
+        phone: changeAccountDto.phone,
+        filled: true
       }
-    })
+    });
   }
 
   async getAccountByUserId(userId: number): Promise<Account> {

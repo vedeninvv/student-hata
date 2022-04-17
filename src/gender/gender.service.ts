@@ -8,18 +8,21 @@ export class GenderService {
   }
 
   async getAllGenders() {
+    return this.prisma.gender.findMany();
   }
 
   async getGenderById(genderId: number) {
+    return this.prisma.gender.findUnique({
+      where: { id: genderId }
+    });
   }
 
   async getGendersByIds(gendersIds: number[]): Promise<Gender[]> {
-    let genders = [];
-    for (let genderId in gendersIds) {
-      genders.push(
-        this.prisma.gender.findUnique({ where: { id: Number(genderId) } })
-      );
-    }
-    return genders;
+    return this.prisma.gender.findMany({
+        where: {
+          id: { in: gendersIds }
+        }
+      }
+    );
   }
 }

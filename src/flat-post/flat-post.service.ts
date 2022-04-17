@@ -11,6 +11,10 @@ export class FlatPostService {
     return this.prisma.flatPost.findMany();
   }
 
+  async getAllFlatPostsWithAccountInfo() {
+    return this.prisma.flatPost.findMany();
+  }
+
   async createNewFlatPost(createFlatPostDto: FlatPostDto, userId: number) {
     const flatPosts = await this.prisma.flatPost.create({
       data: {
