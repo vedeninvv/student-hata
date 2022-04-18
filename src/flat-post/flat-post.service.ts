@@ -1,25 +1,34 @@
 import { Injectable, NotImplementedException } from "@nestjs/common";
 import { FlatPostDto } from "./dto/flat-post.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import { UserService } from "../user/user.service";
+import { UniversityService } from "../university/university.service";
+import { FlatPost } from "@prisma/client";
+
 
 @Injectable()
 export class FlatPostService {
-  async getAllFlatPosts() {
+  constructor(private prisma: PrismaService, private userService: UserService,
+              private universityService: UniversityService) {
+  }
+
+  async getAllFlatPosts(): Promise<FlatPost[]> {
     throw new NotImplementedException();
   }
 
-  async createNewFlatPost(createFlatPostDto: FlatPostDto, userId: number) {
+  async createNewFlatPost(createFlatPostDto: FlatPostDto, userId: number): Promise<FlatPost> {
     throw new NotImplementedException();
   }
 
-  async findFlatPostById(flatId: number) {
+  async findFlatPostById(flatId: number, userId: number): Promise<FlatPost> {
     throw new NotImplementedException();
   }
 
-  changeFlatPost(flatPostDto: FlatPostDto, flatId: number, userId: number) {
+  async changeFlatPost(flatPostDto: FlatPostDto, flatId: number, userId: number): Promise<FlatPost> {
     throw new NotImplementedException();
   }
 
-  deleteFlatPost(flatId: number, userId: number) {
+  async deleteFlatPost(flatId: number, userId: number): Promise<FlatPost> {
     throw new NotImplementedException();
   }
 }

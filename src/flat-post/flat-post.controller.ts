@@ -1,6 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Render } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Render, Res } from "@nestjs/common";
 import { FlatPostService } from "./flat-post.service";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags
+} from "@nestjs/swagger";
 import { FlatPostDto } from "./dto/flat-post.dto";
 
 // В 6 лабе userId будет получаться не прямой передачей в методе
@@ -11,14 +21,15 @@ export class FlatPostController {
   }
 
   @ApiOperation({ summary: "Show all flat's posts" })
+  @ApiOkResponse()
   @Get()
-  @Render("flats")
-  flats() {
+  async flats(@Res() res: Response) {
     return this.flatPostService.getAllFlatPosts();
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show blank flat post to input data about flat" })
+  @ApiOkResponse()
   @Get("/new-flat")
   @Render("rent_flat")
   showBlankFlatPost() {
@@ -27,8 +38,10 @@ export class FlatPostController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Create new flat post" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
   @Post("/new-flat/:userId")
-  createNewFlatPost(@Param("userId") userId: number, @Body() flatPostDto: FlatPostDto) {
+  async createNewFlatPost(@Param("userId", new ParseIntPipe()) userId: number, @Body() flatPostDto: FlatPostDto) {
     this.flatPostService.createNewFlatPost(flatPostDto, userId);
   }
 
@@ -36,20 +49,28 @@ export class FlatPostController {
   @ApiOperation({ summary: "Show flat's post with data to change it" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @ApiParam({ name: "flatId", type: "number" })
-  @Get("/flats/:flatId/:userId")
-  @Render("rent_flat")
-  showFlatPost(@Param("userId") userId: number, @Param("flatId") flatId: number) {
-    return this.flatPostService.findFlatPostById(flatId);
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Get("/:flatId/:userId")
+  async showFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
+                     @Param("flatId", new ParseIntPipe()) flatId: number,
+                     @Res() res: Response) {
+    return this.flatPostService.findFlatPostById(flatId, userId);
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change flat's post" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @ApiParam({ name: "flatId", type: "number" })
-  @Put("/flats/:flatId/:userId")
-  changeFlatPost(@Param("userId") userId: number,
-                 @Param("flatId") flatId: number,
-                 @Body() flatPostDto: FlatPostDto) {
+  @ApiCreatedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @Put("/:flatId/:userId")
+  async changeFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
+                       @Param("flatId", new ParseIntPipe()) flatId: number,
+                       @Body() flatPostDto: FlatPostDto) {
     return this.flatPostService.changeFlatPost(flatPostDto, flatId, userId);
   }
 
@@ -57,8 +78,12 @@ export class FlatPostController {
   @ApiOperation({ summary: "Delete flat's post" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @ApiParam({ name: "flatId", type: "number" })
-  @Delete("/flats/:flatId/:userId")
-  deleteFlatPost(@Param("userId") userId: number, @Param("flatId") flatId: number) {
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Delete("/:flatId/:userId")
+  async deleteFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
+                       @Param("flatId", new ParseIntPipe()) flatId: number) {
     return this.flatPostService.deleteFlatPost(flatId, userId);
   }
 }

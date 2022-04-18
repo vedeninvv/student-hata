@@ -1,15 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { NeighborFormService } from "./neighbor-form.service";
+import { NeighbourFormService } from "./neighbour-form.service";
 
 describe("NeighborFormService", () => {
-  let service: NeighborFormService;
+  let service: NeighbourFormService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [NeighborFormService]
+      providers: [NeighbourFormService]
     }).compile();
 
-    service = module.get<NeighborFormService>(NeighborFormService);
+    service = module.get<NeighbourFormService>(NeighbourFormService);
   });
 
   it("should be defined", () => {

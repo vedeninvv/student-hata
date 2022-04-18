@@ -3,26 +3,31 @@ import { ChangePasswordDto } from "./dto/change-password.dto";
 import { ChangeEmailDto } from "./dto/change-email.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { ChangeAccountDto } from "./dto/change-account.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import { Account, User } from "@prisma/client";
 
 @Injectable()
 export class UserService {
-  async changePassword(changePasswordDto: ChangePasswordDto, userId: number) {
+  constructor(private prisma: PrismaService) {
+  }
+
+  async changePassword(changePasswordDto: ChangePasswordDto, userId: number): Promise<User> {
     throw new NotImplementedException();
   }
 
-  async changeEmail(changeEmailDto: ChangeEmailDto, userId: number) {
+  async changeEmail(changeEmailDto: ChangeEmailDto, userId: number): Promise<User> {
     throw new NotImplementedException();
   }
 
-  async createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     throw new NotImplementedException();
   }
 
-  async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId: number) {
+  async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId: number): Promise<Account> {
     throw new NotImplementedException();
   }
 
-  async getAccountById(userId: number) {
+  async getAccountByUserId(userId: number): Promise<Account> {
     throw new NotImplementedException();
   }
 }
