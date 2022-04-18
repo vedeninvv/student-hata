@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { SaveNeighborFormDto } from "./dto/save-neighbor-form.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { NeighbourForm } from "@prisma/client";
@@ -18,7 +18,9 @@ export class NeighbourFormService {
   async getNeighbourFormByUserId(userId: number): Promise<NeighbourForm> {
     return this.prisma.neighbourForm.findUnique({
       where: { userId: userId },
-      rejectOnNotFound: null
+      rejectOnNotFound: () => {
+        throw new HttpException("NeighbourForm not found", HttpStatus.NOT_FOUND);
+      }
     });
   }
 
@@ -57,11 +59,11 @@ export class NeighbourFormService {
         include: { preferredGenders: true }
       });
     } catch (e) {
-      return null;
+      throw new HttpException("NeighbourForm not found when try to delete", HttpStatus.NOT_FOUND);
     }
   }
 
-  async getAllNeighbourFormsWithAccountInfo() {
+  async getAllNeighbourFormsWithAccountInfo(): Promise<NeighbourFormWithAccountInfoDto[]> {
     const neighbourForms = await this.prisma.neighbourForm.findMany({
       include: {
         preferredGenders: true,
@@ -73,7 +75,7 @@ export class NeighbourFormService {
       const neighbourForm = neighbourForms[i];
       const account = await this.userService.getAccountByUserId(neighbourForm.userId);
       if (!account.filled) {
-        continue
+        continue;
       }
       const gender = await this.genderService.getGenderById(account.genderId);
       let preferredGendersString = "";
@@ -81,9 +83,9 @@ export class NeighbourFormService {
         preferredGendersString += (await this.genderService.getGenderById(Number(preferredGender))).genderName + " ";
       }
       allNeighbours.push(new NeighbourFormWithAccountInfoDto(
-          account.name != null? account.name: "Не задано",
-          account.surname != null? account.surname: "Не задано",
-          gender.genderName != null? gender.genderName: "Не задано",
+          account.name,
+          account.surname,
+          gender.genderName,
           neighbourForm.university.name,
           neighbourForm.faculty,
           neighbourForm.preferredPrice,

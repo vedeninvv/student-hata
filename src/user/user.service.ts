@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ChangePasswordDto } from "./dto/change-password.dto";
 import { ChangeEmailDto } from "./dto/change-email.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -11,19 +11,18 @@ export class UserService {
   constructor(private prisma: PrismaService) {
   }
 
-  async changePassword(changePasswordDto: ChangePasswordDto, userId: number): Promise<boolean> {
+  async changePassword(changePasswordDto: ChangePasswordDto, userId: number): Promise<User> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (user.password === changePasswordDto.oldPassword) {
-      await this.prisma.user.update({
+      return await this.prisma.user.update({
         where: { id: userId },
         data: { password: changePasswordDto.newPassword }
       });
-      return true;
     }
-    return false;
+    throw new HttpException("Passwords are not same", HttpStatus.BAD_REQUEST);
   }
 
-  async changeEmail(changeEmailDto: ChangeEmailDto, userId: number) {
+  async changeEmail(changeEmailDto: ChangeEmailDto, userId: number): Promise<User> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     return this.prisma.user.update({
       where: { id: userId },

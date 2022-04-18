@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsPositive, Min } from "class-validator";
+import { IsArray, IsInt, IsPositive } from "class-validator";
 
 export class FlatPostDto {
   @ApiProperty()
@@ -16,9 +16,11 @@ export class FlatPostDto {
   description: string;
   @ApiProperty()
   requirements: string;
-  @ApiProperty()
+  @ApiProperty({ type: [Number] })
+  @IsArray()
   preferredUniversityIds: number[];
-  @ApiProperty()
+  @ApiProperty({ type: [Number] })
+  @IsArray()
   undesirableUniversityIds: number[];
 
   // coming soon...

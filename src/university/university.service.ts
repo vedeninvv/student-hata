@@ -15,4 +15,12 @@ export class UniversityService {
       where: { id: universityId }
     });
   }
+
+  async getUniversitiesByIds(universitiesByIds: number[]) {
+    return this.prisma.university.findMany({
+      where: {
+        id: { in: universitiesByIds }
+      }
+    });
+  }
 }

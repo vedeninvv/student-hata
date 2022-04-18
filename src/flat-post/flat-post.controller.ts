@@ -1,6 +1,16 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Render, Res } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Render, Res } from "@nestjs/common";
 import { FlatPostService } from "./flat-post.service";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags
+} from "@nestjs/swagger";
 import { FlatPostDto } from "./dto/flat-post.dto";
 import { Response } from "express";
 
@@ -12,19 +22,21 @@ export class FlatPostController {
   }
 
   @ApiOperation({ summary: "Show all flat's posts" })
+  @ApiOkResponse()
   @Get()
   async flats(@Res() res: Response) {
-    const flats = await this.flatPostService.getAllFlatPosts();
-    // res.render("flats", {
-    //   flats: flats
-    // });
-    res.status(HttpStatus.OK).json({
+    const flats = await this.flatPostService.getAllFlatPostsWithAccountInfo();
+    res.render("flats", {
       flats: flats
-    })
+    });
+    // res.status(HttpStatus.OK).json({
+    //   flats: flats
+    // })
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show blank flat post to input data about flat" })
+  @ApiOkResponse()
   @Get("/new-flat")
   @Render("rent_flat")
   showBlankFlatPost() {
@@ -33,6 +45,8 @@ export class FlatPostController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Create new flat post" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
   @Post("/new-flat/:userId")
   async createNewFlatPost(@Param("userId", new ParseIntPipe()) userId: number, @Body() flatPostDto: FlatPostDto) {
     return await this.flatPostService.createNewFlatPost(flatPostDto, userId);
@@ -42,24 +56,31 @@ export class FlatPostController {
   @ApiOperation({ summary: "Show flat's post with data to change it" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @ApiParam({ name: "flatId", type: "number" })
-  @Get("/flats/:flatId/:userId")
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Get("/:flatId/:userId")
   async showFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
                      @Param("flatId", new ParseIntPipe()) flatId: number,
                      @Res() res: Response) {
-    const flatPost = await this.flatPostService.findFlatPostById(flatId, userId);
-    // res.render("rent_flat", {
-    //   flatPost: flatPost
-    // });
-    res.status(HttpStatus.OK).json({
-      flatPost: flatPost
-    })
+    const flat = await this.flatPostService.findFlatPostById(flatId, userId);
+    res.render("rent_flat", {
+      flat: flat
+    });
+    // res.status(HttpStatus.OK).json({
+    //   flat: flat
+    // })
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change flat's post" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @ApiParam({ name: "flatId", type: "number" })
-  @Put("/flats/:flatId/:userId")
+  @ApiCreatedResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @Put("/:flatId/:userId")
   async changeFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
                        @Param("flatId", new ParseIntPipe()) flatId: number,
                        @Body() flatPostDto: FlatPostDto) {
@@ -70,7 +91,10 @@ export class FlatPostController {
   @ApiOperation({ summary: "Delete flat's post" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @ApiParam({ name: "flatId", type: "number" })
-  @Delete("/flats/:flatId/:userId")
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
+  @Delete("/:flatId/:userId")
   async deleteFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
                        @Param("flatId", new ParseIntPipe()) flatId: number) {
     return await this.flatPostService.deleteFlatPost(flatId, userId);

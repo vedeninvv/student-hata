@@ -7,11 +7,11 @@ export class GenderService {
   constructor(private prisma: PrismaService) {
   }
 
-  async getAllGenders() {
+  async getAllGenders(): Promise<Gender[]> {
     return this.prisma.gender.findMany();
   }
 
-  async getGenderById(genderId: number) {
+  async getGenderById(genderId: number): Promise<Gender> {
     return this.prisma.gender.findUnique({
       where: { id: genderId }
     });

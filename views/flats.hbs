@@ -1,74 +1,57 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link href="/css/flat-neighbor.css" rel="stylesheet">
-    {{> common_css_js}}
+  <link href="/css/flat-neighbor.css" rel="stylesheet">
+  {{> common_css_js}}
 
-    <title>Квартиры</title>
+  <title>Квартиры</title>
 </head>
 <body>
 
 {{> header}}
 
 <main>
-  {{flats}}
-    <div class="flat-neighbors-list">
-        <div class="flat-neighbors-list__elem">
-            <img src="/media/flat-pic-example.png">
-            <div class="characteristic-list">
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Адрес:</span>
-                    <span class="characteristic-list-line__value">Такой то такой то адрес...</span>
-                </div>
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Макс. жильцов:</span>
-                    <span class="characteristic-list-line__value">4</span>
-                </div>
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Примечание:</span>
-                    <span class="characteristic-list-line__value">Это какое-то примечание.</span>
-                </div>
-            </div>
+  <div class="flat-neighbors-list">
+    {{#each flats}}
+      <div class="flat-neighbors-list__elem">
+        <img src="/media/flat-pic-example.png">
+        <div class="characteristic-list">
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Владелец: </span>
+            <span class="characteristic-list-line__value">{{this.name}} {{this.surname}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Адрес</span>
+            <span class="characteristic-list-line__value">{{this.address}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Цена: </span>
+            <span class="characteristic-list-line__value">{{this.price}} руб.</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Максимальное число жильцов: </span>
+            <span class="characteristic-list-line__value">{{this.maxPeople}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Описание: </span>
+            <span class="characteristic-list-line__value">{{this.description}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Требования к жильцам: </span>
+            <span class="characteristic-list-line__value">{{this.requirements}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Предпочитаемые университеты: </span>
+            <span class="characteristic-list-line__value">{{this.preferredUniversities}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Нежелательные университеты: </span>
+            <span class="characteristic-list-line__value">{{this.undesirableUniversities}}</span>
+          </div>
         </div>
-        <div class="flat-neighbors-list__elem">
-            <img src="/media/flat-pic-example.png">
-            <div class="characteristic-list">
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Адрес:</span>
-                    <span class="characteristic-list-line__value">Такой то такой то адрес...</span>
-                </div>
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Макс. жильцов:</span>
-                    <span class="characteristic-list-line__value">4</span>
-                </div>
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Примечание:</span>
-                    <span class="characteristic-list-line__value">Это какое-то примечание.</span>
-                </div>
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Название пункта:</span>
-                    <span class="characteristic-list-line__value">Текст пункта</span>
-                </div>
-            </div>
-        </div>
-        <div class="flat-neighbors-list__elem">
-            <img src="/media/flat-pic-example.png">
-            <div class="characteristic-list">
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Адрес:</span>
-                    <span class="characteristic-list-line__value">Такой то такой то адрес...</span>
-                </div>
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Макс. жильцов:</span>
-                    <span class="characteristic-list-line__value">4</span>
-                </div>
-                <div class="characteristic-list-line">
-                    <span class="characteristic-list-line__title">Примечание:</span>
-                    <span class="characteristic-list-line__value">Это какое-то примечание.</span>
-                </div>
-            </div>
-        </div>
-    </div>
+      </div>
+    {{/each}}
+  </div>
 </main>
 
 {{> footer}}

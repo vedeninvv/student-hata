@@ -1,8 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsPositive } from "class-validator";
+import { IsArray, IsInt, IsPositive } from "class-validator";
 
 export class SaveNeighborFormDto {
   @ApiProperty()
+  @IsInt()
+  @IsPositive()
   universityId: number;
   @ApiProperty()
   faculty: string;
@@ -20,6 +22,7 @@ export class SaveNeighborFormDto {
   requirementsForNeighbor: string;
   @ApiProperty()
   aboutMyself: string;
-  @ApiProperty()
+  @ApiProperty({ type: [Number] })
+  @IsArray()
   preferredGenders: number[];
 }

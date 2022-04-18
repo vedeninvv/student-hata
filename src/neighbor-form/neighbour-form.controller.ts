@@ -1,6 +1,16 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Res } from "@nestjs/common";
 import { NeighbourFormService } from "./neighbour-form.service";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags
+} from "@nestjs/swagger";
 import { SaveNeighborFormDto } from "./dto/save-neighbor-form.dto";
 import { Response } from "express";
 import { UniversityService } from "../university/university.service";
@@ -17,6 +27,7 @@ export class NeighbourFormController {
 
   @ApiOperation({ summary: "Show all neighbor forms" })
   @Get("/neighbors")
+  @ApiOkResponse()
   async neighbours(@Res() res: Response) {
     const neighbours = await this.neighbourFormService.getAllNeighbourFormsWithAccountInfo();
     res.render("neighbors",
@@ -28,6 +39,7 @@ export class NeighbourFormController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show blank neighbor form" })
+  @ApiOkResponse()
   @Get("/neighbor_form/new")
   async blankNeighbourForm(@Res() res: Response) {
     const universities = await this.universityService.getAllUniversities();
@@ -43,6 +55,9 @@ export class NeighbourFormController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show own user's neighbor form" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @ApiNotFoundResponse()
   @Get("/:userId/neighbor_form")
   async neighbourForm(@Param("userId", new ParseIntPipe()) userId: number, @Res() res: Response) {
     const neighbourForm = await this.neighbourFormService.getNeighbourFormByUserId(userId);
@@ -66,6 +81,8 @@ export class NeighbourFormController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Save(Create or change) own user's neighbor form" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
   @Post("/:userId/neighbor_form")
   async saveNeighbourForm(@Param("userId", new ParseIntPipe) userId: number,
                           @Body() saveNeighborFormDto: SaveNeighborFormDto) {
@@ -75,6 +92,8 @@ export class NeighbourFormController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Delete own user's neighbor form" })
   @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
   @Delete("/:userId/neighbor_form")
   async deleteNeighbourForm(@Param("userId", new ParseIntPipe()) userId: number) {
     return await this.neighbourFormService.deleteNeighbourForm(userId);
