@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put,Query, Render, Res } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Render, Res } from "@nestjs/common";
 import { FlatPostService } from "./flat-post.service";
 import {
   ApiBadRequestResponse,
@@ -45,23 +45,23 @@ export class FlatPostController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Create new flat post" })
-  @ApiQuery({ name: "userId", type: "number", description: "Will be removed in lab6" })
-  @ApiCreatedResponse()
-  @ApiBadRequestResponse()
-  @Post("/new-flat")
+  @ApiQuery({ name: "userId", type: "number" })
+  @ApiCreatedResponse({ description: "FlatPost was created" })
+  @ApiBadRequestResponse({ description: "Invalid flatPost data" })
+  @Post("/flats")
   async createNewFlatPost(@Query("userId", new ParseIntPipe()) userId: number, @Body() flatPostDto: FlatPostDto) {
     return await this.flatPostService.createNewFlatPost(flatPostDto, userId);
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show flat's post with data to change it" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiQuery({ name: "userId", type: "number" })
   @ApiParam({ name: "flatId", type: "number" })
   @ApiOkResponse()
-  @ApiForbiddenResponse()
-  @ApiNotFoundResponse()
-  @Get("/:flatId/:userId")
-  async showFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
+  @ApiForbiddenResponse({ description: "Current user is not an flatPost's author" })
+  @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
+  @Get("/:flatId")
+  async showFlatPost(@Query("userId", new ParseIntPipe()) userId: number,
                      @Param("flatId", new ParseIntPipe()) flatId: number,
                      @Res() res: Response) {
     const flat = await this.flatPostService.findFlatPostById(flatId, userId);
@@ -75,14 +75,14 @@ export class FlatPostController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change flat's post" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiQuery({ name: "userId", type: "number" })
   @ApiParam({ name: "flatId", type: "number" })
-  @ApiCreatedResponse()
-  @ApiForbiddenResponse()
-  @ApiNotFoundResponse()
-  @ApiBadRequestResponse()
-  @Put("/:flatId/:userId")
-  async changeFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
+  @ApiCreatedResponse({ description: "FlatPost was changed"})
+  @ApiForbiddenResponse({ description: "Current user is not an flatPost's author"})
+  @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
+  @ApiBadRequestResponse({ description: "Invalid flatPost data" })
+  @Put("/:flatId")
+  async changeFlatPost(@Query("userId", new ParseIntPipe()) userId: number,
                        @Param("flatId", new ParseIntPipe()) flatId: number,
                        @Body() flatPostDto: FlatPostDto) {
     return await this.flatPostService.changeFlatPost(flatPostDto, flatId, userId);
@@ -90,13 +90,13 @@ export class FlatPostController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Delete flat's post" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiQuery({ name: "userId", type: "number" })
   @ApiParam({ name: "flatId", type: "number" })
   @ApiOkResponse()
-  @ApiForbiddenResponse()
-  @ApiNotFoundResponse()
-  @Delete("/:flatId/:userId")
-  async deleteFlatPost(@Param("userId", new ParseIntPipe()) userId: number,
+  @ApiForbiddenResponse({ description: "Current user is not an flatPost's author"})
+  @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
+  @Delete("/:flatId")
+  async deleteFlatPost(@Query("userId", new ParseIntPipe()) userId: number,
                        @Param("flatId", new ParseIntPipe()) flatId: number) {
     return await this.flatPostService.deleteFlatPost(flatId, userId);
   }

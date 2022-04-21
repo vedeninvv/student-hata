@@ -1,11 +1,11 @@
-import { Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Render, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Post, Put,Query, Render, Res } from "@nestjs/common";
 import { UserService } from "./user.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOperation,
-  ApiParam,
+  ApiQuery,
   ApiTags
 } from "@nestjs/swagger";
 import { ChangePasswordDto } from "./dto/change-password.dto";
@@ -34,8 +34,8 @@ export class UserController {
   }
 
   @ApiOperation({ summary: "Create new user and blank account, which connected with user by one-to-one" })
-  @ApiCreatedResponse()
-  @ApiBadRequestResponse()
+  @ApiCreatedResponse( { description: "User was created" })
+  @ApiBadRequestResponse({ description: "Invalid user data" })
   @Post("/user")
   async createUser(@Body() createUserDto: CreateUserDto) {
     await this.userService.createUser(createUserDto);
@@ -43,41 +43,39 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change password" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
-  @ApiCreatedResponse()
-  @ApiBadRequestResponse()
-  @Put("/user/:userId/password")
-  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Param("userId", new ParseIntPipe()) userId: number) {
+  @ApiQuery({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiCreatedResponse( { description: "Password was changed" })
+  @ApiBadRequestResponse({ description: "Invalid password data" })
+  @Put("/user/password")
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Query("userId", new ParseIntPipe()) userId: number) {
     return await this.userService.changePassword(changePasswordDto, userId);
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change email" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
-  @ApiCreatedResponse()
-  @ApiBadRequestResponse()
-  @Put("/user/:userId/email")
-  async changeEmail(@Body() changeEmailDto: ChangeEmailDto, @Param("userId", new ParseIntPipe()) userId: number) {
+  @ApiQuery({ name: "userId", type: "number" })
+  @ApiCreatedResponse( { description: "Email was changed" })
+  @ApiBadRequestResponse({ description: "Invalid email data" })
+  @Put("/user/email")
+  async changeEmail(@Body() changeEmailDto: ChangeEmailDto, @Query("userId", new ParseIntPipe()) userId: number) {
     return await this.userService.changeEmail(changeEmailDto, userId);
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change account info" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
-  @ApiCreatedResponse()
-  @ApiBadRequestResponse()
-  @Put("/user/:userId/account")
-  async changeAccountInfo(@Body() changeAccountDto: ChangeAccountDto, @Param("userId", new ParseIntPipe()) userId: number) {
+  @ApiQuery({ name: "userId", type: "number" })
+  @ApiCreatedResponse({ description: "Account data was changed" })
+  @ApiBadRequestResponse( { description: "Invalid account data" })
+  @Put("/user/account")
+  async changeAccountInfo(@Body() changeAccountDto: ChangeAccountDto, @Query("userId", new ParseIntPipe()) userId: number) {
     return await this.userService.changeAccountInfo(changeAccountDto, userId);
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show own user's account info" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
-  @ApiCreatedResponse()
-  @ApiBadRequestResponse()
-  @Get("/user/:userId/account")
-  async accountInfo(@Param("userId", new ParseIntPipe()) userId: number, @Res() res: Response) {
+  @ApiQuery({ name: "userId", type: "number" })
+  @Get("/user/account")
+  async accountInfo(@Query("userId", new ParseIntPipe()) userId: number, @Res() res: Response) {
     const account = await this.userService.getAccountByUserId(userId);
     // res.render("account",
     //   { account: account }
