@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Injectable, NotImplementedException } from "@nestjs/common";
 import { FlatPostDto } from "./dto/flat-post.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";

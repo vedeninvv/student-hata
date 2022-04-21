@@ -1,14 +1,14 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Render, Res } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put,Query, Render, Res } from "@nestjs/common";
 import { FlatPostService } from "./flat-post.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse,ApiExcludeEndpoint,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
+  ApiParam,ApiQuery,
   ApiTags
 } from "@nestjs/swagger";
 import { FlatPostDto } from "./dto/flat-post.dto";
@@ -37,6 +37,7 @@ export class FlatPostController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show blank flat post to input data about flat" })
   @ApiOkResponse()
+  @ApiExcludeEndpoint()
   @Get("/new-flat")
   @Render("rent_flat")
   showBlankFlatPost() {
@@ -44,11 +45,11 @@ export class FlatPostController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Create new flat post" })
-  @ApiParam({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiQuery({ name: "userId", type: "number", description: "Will be removed in lab6" })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
-  @Post("/new-flat/:userId")
-  async createNewFlatPost(@Param("userId", new ParseIntPipe()) userId: number, @Body() flatPostDto: FlatPostDto) {
+  @Post("/new-flat")
+  async createNewFlatPost(@Query("userId", new ParseIntPipe()) userId: number, @Body() flatPostDto: FlatPostDto) {
     return await this.flatPostService.createNewFlatPost(flatPostDto, userId);
   }
 

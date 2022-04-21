@@ -23,4 +23,7 @@ export class UniversityService {
       }
     });
   }
+
+  async getUniversitiesByIds(universitiesByIds: number[]) {
+  }
 }

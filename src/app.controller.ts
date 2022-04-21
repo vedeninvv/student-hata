@@ -1,17 +1,19 @@
-import { Controller, Get, Render, Res } from "@nestjs/common";
+import { Controller, Get, Render } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { Response } from "express";
+import { ApiExcludeEndpoint } from "@nestjs/swagger";
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {
   }
 
+  @ApiExcludeEndpoint()
   @Get(["/", "/index"])
   @Render("index")
   root() {
   }
 
+  @ApiExcludeEndpoint()
   @Get("/todoList")
   @Render("todoList")
   todoList() {

@@ -3,7 +3,7 @@ import { NeighbourFormService } from "./neighbour-form.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse,ApiExcludeEndpoint,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -37,9 +37,7 @@ export class NeighbourFormController {
     // })
   }
 
-  @ApiBearerAuth()
-  @ApiOperation({ summary: "Show blank neighbor form" })
-  @ApiOkResponse()
+  @ApiExcludeEndpoint()
   @Get("/neighbor_form/new")
   async blankNeighbourForm(@Res() res: Response) {
     const universities = await this.universityService.getAllUniversities();
