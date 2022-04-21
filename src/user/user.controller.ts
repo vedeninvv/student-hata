@@ -3,7 +3,7 @@ import { UserService } from "./user.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse, ApiExcludeEndpoint, ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags
@@ -20,12 +20,14 @@ export class UserController {
   constructor(private readonly userService: UserService) {
   }
 
+  @ApiExcludeEndpoint()
   @ApiOperation({ summary: "Waiting for lab6..." })
   @Get("/login")
   @Render("login")
   login() {
   }
 
+  @ApiExcludeEndpoint()
   @ApiOperation({ summary: "Waiting for lab6..." })
   @Get("/registration")
   @Render("registration")
@@ -42,7 +44,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change password" })
-  @ApiQuery({ name: "userId", type: "number", description: "Will be removed in lab6" })
+  @ApiQuery({ name: "userId", type: "number" })
   @ApiCreatedResponse( { description: "Password was changed" })
   @ApiBadRequestResponse({ description: "Invalid password data" })
   @Put("/user/password")
@@ -73,6 +75,7 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show own user's account info" })
   @ApiQuery({ name: "userId", type: "number" })
+  @ApiOkResponse({ description: "Everything is OK" })
   @Get("/user/account")
   async accountInfo(@Query("userId", new ParseIntPipe()) userId: number, @Res() res: Response) {
     return this.userService.getAccountByUserId(userId);
