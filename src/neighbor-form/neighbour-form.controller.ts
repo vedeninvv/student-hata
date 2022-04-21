@@ -27,7 +27,7 @@ export class NeighbourFormController {
 
   @ApiOperation({ summary: "Show all neighbor forms" })
   @Get("/neighbors")
-  @ApiOkResponse()
+  @ApiOkResponse({ description: "Everything is OK" })
   async neighbours(@Res() res: Response) {
     const neighbours = await this.neighbourFormService.getAllNeighbourFormsWithAccountInfo();
     res.render("neighbors",
@@ -53,7 +53,7 @@ export class NeighbourFormController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show own user's neighbor form" })
   @ApiParam({ name: "id", type: "number", description: "User's id" })
-  @ApiOkResponse()
+  @ApiOkResponse({ description: "Everything is OK" })
   @ApiForbiddenResponse({ description: "NeighbourForm does not belong to this user" })
   @ApiNotFoundResponse({ description: "NeighbourForm for this user does not exist" })
   @Get("/user/:id/neighbor-form")
@@ -90,7 +90,7 @@ export class NeighbourFormController {
   @ApiBearerAuth()
   @ApiOperation({ summary: "Delete own user's neighbor form" })
   @ApiParam({ name: "id", type: "number", description: "User's id" })
-  @ApiOkResponse()
+  @ApiOkResponse({ description: "Everything is OK" })
   @ApiNotFoundResponse({ description: "NeighbourForm for this user does not exist" })
   @Delete("/user/:id/neighbor-form")
   async deleteNeighbourForm(@Param("userId", new ParseIntPipe()) userId: number) {

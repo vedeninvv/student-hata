@@ -22,7 +22,7 @@ export class FlatPostController {
   }
 
   @ApiOperation({ summary: "Show all flat's posts" })
-  @ApiOkResponse()
+  @ApiOkResponse({ description: "Everything is OK" })
   @Get()
   async flats(@Res() res: Response) {
     const flats = await this.flatPostService.getAllFlatPostsWithAccountInfo();
@@ -57,7 +57,7 @@ export class FlatPostController {
   @ApiOperation({ summary: "Show flat's post with data to change it" })
   @ApiQuery({ name: "userId", type: "number" })
   @ApiParam({ name: "flatId", type: "number" })
-  @ApiOkResponse()
+  @ApiOkResponse({ description: "Everything is OK" })
   @ApiForbiddenResponse({ description: "Current user is not an flatPost's author" })
   @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
   @Get("/:flatId")
@@ -92,7 +92,7 @@ export class FlatPostController {
   @ApiOperation({ summary: "Delete flat's post" })
   @ApiQuery({ name: "userId", type: "number" })
   @ApiParam({ name: "flatId", type: "number" })
-  @ApiOkResponse()
+  @ApiOkResponse({ description: "Everything is OK" })
   @ApiForbiddenResponse({ description: "Current user is not an flatPost's author"})
   @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
   @Delete("/:flatId")
