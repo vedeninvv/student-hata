@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotImplementedException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { Gender } from "@prisma/client";
 
@@ -8,12 +8,14 @@ export class GenderService {
   }
 
   async getAllGenders(): Promise<Gender[]> {
+    throw new NotImplementedException();
   }
 
   async getGenderById(genderId: number): Promise<Gender> {
+    throw new NotImplementedException();
   }
 
   async getGendersByIds(gendersIds: number[]): Promise<Gender[]> {
-
+    throw new NotImplementedException();
   }
 }

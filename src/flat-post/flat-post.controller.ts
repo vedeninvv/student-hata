@@ -3,7 +3,7 @@ import { FlatPostService } from "./flat-post.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse, ApiExcludeEndpoint,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -27,9 +27,7 @@ export class FlatPostController {
     return this.flatPostService.getAllFlatPosts();
   }
 
-  @ApiBearerAuth()
-  @ApiOperation({ summary: "Show blank flat post to input data about flat" })
-  @ApiOkResponse()
+  @ApiExcludeEndpoint()
   @Get("/new-flat")
   @Render("rent_flat")
   showBlankFlatPost() {

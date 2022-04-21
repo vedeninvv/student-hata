@@ -3,7 +3,7 @@ import { NeighbourFormService } from "./neighbour-form.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse, ApiExcludeEndpoint,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -28,12 +28,10 @@ export class NeighbourFormController {
   @Get("/neighbors")
   @ApiOkResponse()
   async neighbours(@Res() res: Response) {
-    return this.neighbourFormService.getAllNeighborForms();
+    return this.neighbourFormService.getAllNeighbourForms();
   }
 
-  @ApiBearerAuth()
-  @ApiOperation({ summary: "Show blank neighbor form" })
-  @ApiOkResponse()
+  @ApiExcludeEndpoint()
   @Get("/neighbor_form/new")
   async blankNeighbourForm(@Res() res: Response) {
   }
