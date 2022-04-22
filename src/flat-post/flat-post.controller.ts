@@ -48,7 +48,7 @@ export class FlatPostController {
   @ApiQuery({ name: "userId", type: "number" })
   @ApiCreatedResponse({ description: "FlatPost was created" })
   @ApiBadRequestResponse({ description: "Invalid flatPost data" })
-  @Post("/flats")
+  @Post()
   async createNewFlatPost(@Query("userId", new ParseIntPipe()) userId: number, @Body() flatPostDto: FlatPostDto) {
     return await this.flatPostService.createNewFlatPost(flatPostDto, userId);
   }
