@@ -9,9 +9,10 @@ import { NeighborFormModule } from './neighbor-form/neighbor-form.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { GenderModule } from './gender/gender.module';
 import { UniversityModule } from './university/university.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, FlatPostModule, NeighborFormModule, PrismaModule, GenderModule, UniversityModule],
+  imports: [UserModule, FlatPostModule, NeighborFormModule, PrismaModule, GenderModule, UniversityModule, AuthModule],
   controllers: [
     AppController,
   ],
