@@ -32,7 +32,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter(), new SupertokensExceptionFilter());
 
   app.enableCors({
-    origin: ['http://localhost:12345'],
+    origin: ['https://student-hata.herokuapp.com'],
     allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
     credentials: true,
   });

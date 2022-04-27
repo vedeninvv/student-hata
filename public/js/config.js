@@ -1,0 +1,1 @@
+const baseUrl = "https://student-hata.herokuapp.com";

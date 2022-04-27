@@ -9,6 +9,7 @@ import { GenderModule } from "./gender/gender.module";
 import { UniversityModule } from "./university/university.module";
 import { AuthModule } from "./auth/auth.module";
 
+//todo hide in heroku env
 @Module({
   imports: [UserModule, FlatPostModule, NeighborFormModule, PrismaModule, GenderModule, UniversityModule,
     AuthModule.forRoot({
@@ -16,8 +17,8 @@ import { AuthModule } from "./auth/auth.module";
       apiKey: "uBYyv5UBI3mcYVbajHftfbHgvp=xBq",
       appInfo: {
         appName: "student-hata",
-        apiDomain: "http://localhost:12345",
-        websiteDomain: "http://localhost:12345",
+        apiDomain: "https://student-hata.herokuapp.com",
+        websiteDomain: "https://student-hata.herokuapp.com",
         apiBasePath: "/auth",
         websiteBasePath: "/test"
       }

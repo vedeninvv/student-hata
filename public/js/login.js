@@ -6,7 +6,6 @@ window.onload = function() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const baseUrl = "http://localhost:12345";
     const data = {
       formFields: [
         {
