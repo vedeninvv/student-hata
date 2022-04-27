@@ -7,6 +7,8 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import hbs = require("hbs");
 import { ValidationPipe } from "@nestjs/common";
 import { HttpExceptionFilter } from "./http-exception.filter";
+import supertokens from "supertokens-node";
+import { SupertokensExceptionFilter } from "./auth/auth.filter";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -27,7 +29,13 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter(), new SupertokensExceptionFilter());
+
+  app.enableCors({
+    origin: ['http://localhost:12345'],
+    allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
+    credentials: true,
+  });
 
   await app.listen(process.env.PORT || 8080);
 }

@@ -7,6 +7,7 @@ import {
 
 import { AuthMiddleware } from './auth.middleware';
 import { ConfigInjectionToken, AuthModuleConfig } from './config.interface';
+import { SupertokensService } from './supertokens/supertokens.service';
 
 @Module({
   providers: [],
@@ -29,6 +30,7 @@ export class AuthModule implements NestModule {
           },
           provide: ConfigInjectionToken,
         },
+        SupertokensService,
       ],
       exports: [],
       imports: [],
