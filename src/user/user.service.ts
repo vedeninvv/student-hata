@@ -11,30 +11,30 @@ export class UserService {
   constructor(private prisma: PrismaService) {
   }
 
-  async changePassword(changePasswordDto: ChangePasswordDto, userId: number): Promise<User> {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (user.password === changePasswordDto.oldPassword) {
-      return await this.prisma.user.update({
-        where: { id: userId },
-        data: { password: changePasswordDto.newPassword }
-      });
-    }
-    throw new HttpException("Passwords are not same", HttpStatus.BAD_REQUEST);
-  }
+  // async changePassword(changePasswordDto: ChangePasswordDto, userId: string): Promise<User> {
+  //   const user = await this.prisma.user.findUnique({ where: { id: userId } });
+  //   if (user.password === changePasswordDto.oldPassword) {
+  //     return await this.prisma.user.update({
+  //       where: { id: userId },
+  //       data: { password: changePasswordDto.newPassword }
+  //     });
+  //   }
+  //   throw new HttpException("Passwords are not same", HttpStatus.BAD_REQUEST);
+  // }
+  //
+  // async changeEmail(changeEmailDto: ChangeEmailDto, userId: string): Promise<User> {
+  //   const user = await this.prisma.user.findUnique({ where: { id: userId } });
+  //   return this.prisma.user.update({
+  //     where: { id: userId },
+  //     data: { email: changeEmailDto.newEmail }
+  //   });
+  // }
 
-  async changeEmail(changeEmailDto: ChangeEmailDto, userId: number): Promise<User> {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: { email: changeEmailDto.newEmail }
-    });
-  }
-
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto, userId: string): Promise<User> {
     return this.prisma.user.create({
       data: {
         email: createUserDto.email,
-        password: createUserDto.password,
+        id: userId,
         account: {
           create: {}
         }
@@ -42,7 +42,7 @@ export class UserService {
     });
   }
 
-  async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId: number): Promise<Account> {
+  async changeAccountInfo(changeAccountDto: ChangeAccountDto, userId: string): Promise<Account> {
     return this.prisma.account.update({
       where: { userId: userId },
       data: {
@@ -56,7 +56,7 @@ export class UserService {
     });
   }
 
-  async getAccountByUserId(userId: number): Promise<Account> {
+  async getAccountByUserId(userId: string): Promise<Account> {
     return this.prisma.account.findUnique({ where: { userId: userId } });
   }
 }

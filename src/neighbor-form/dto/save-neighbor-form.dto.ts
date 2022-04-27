@@ -4,7 +4,6 @@ import { IsArray, IsInt, IsPositive } from "class-validator";
 export class SaveNeighborFormDto {
   @ApiProperty()
   @IsInt()
-  @IsPositive()
   universityId: number;
   @ApiProperty()
   faculty: string;

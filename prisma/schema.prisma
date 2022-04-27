@@ -12,9 +12,8 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
+  id            String         @id
   email         String         @unique
-  password      String
   account       Account?
   flatPosts     FlatPost[]
   neighbourForm NeighbourForm?
@@ -28,7 +27,7 @@ model Account {
   gender       Gender? @relation(fields: [genderId], references: [id])
   contactEmail String?
   phone        String?
-  userId       Int     @unique
+  userId       String  @unique
   user         User    @relation(fields: [userId], references: [id])
   filled       Boolean @default(false)
 }
@@ -44,7 +43,7 @@ model FlatPost {
   requirements            String?
   //photos                  FlatPostPhoto[]
   author                  User                              @relation(fields: [authorId], references: [id])
-  authorId                Int
+  authorId                String
   //FlatPostPhoto           FlatPostPhoto[]
 }
 
@@ -75,7 +74,7 @@ model NeighbourForm {
   requirementsForNeighbour String?
   aboutMyself              String?
   user                     User                               @relation(fields: [userId], references: [id])
-  userId                   Int                                @unique
+  userId                   String                             @unique
 }
 
 model PreferredGendersOnNeighbourForms {

@@ -54,7 +54,7 @@ export class FlatPostService {
     return flatPostsWithAccountInfoDto;
   }
 
-  async createNewFlatPost(createFlatPostDto: FlatPostDto, userId: number): Promise<FlatPost> {
+  async createNewFlatPost(createFlatPostDto: FlatPostDto, userId: string): Promise<FlatPost> {
     const flatPosts = await this.prisma.flatPost.create({
       data: {
         address: createFlatPostDto.address,
@@ -84,7 +84,7 @@ export class FlatPostService {
     return flatPosts;
   }
 
-  async findFlatPostById(flatId: number, userId: number): Promise<FlatPost> {
+  async findFlatPostById(flatId: number, userId: string): Promise<FlatPost> {
     const flatPost = await this.prisma.flatPost.findUnique({
       where: { id: flatId },
       rejectOnNotFound:
@@ -97,13 +97,13 @@ export class FlatPostService {
     return flatPost;
   }
 
-  async changeFlatPost(flatPostDto: FlatPostDto, flatId: number, userId: number): Promise<FlatPost> {
+  async changeFlatPost(flatPostDto: FlatPostDto, flatId: number, userId: string): Promise<FlatPost> {
     const flatPost = await this.findFlatPostById(flatId, userId);
     this.deleteFlatPost(flatId, userId);
     return this.createNewFlatPost(flatPostDto, userId);
   }
 
-  async deleteFlatPost(flatId: number, userId: number): Promise<FlatPost> {
+  async deleteFlatPost(flatId: number, userId: string): Promise<FlatPost> {
     const flatPost = await this.findFlatPostById(flatId, userId);
     return this.prisma.flatPost.delete({
       where: {

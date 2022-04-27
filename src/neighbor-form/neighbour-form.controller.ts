@@ -1,22 +1,24 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Render, Res } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Res, UseGuards } from "@nestjs/common";
 import { NeighbourFormService } from "./neighbour-form.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiCreatedResponse,ApiExcludeEndpoint,
+  ApiCreatedResponse,
+  ApiExcludeEndpoint,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
   ApiTags
 } from "@nestjs/swagger";
 import { SaveNeighborFormDto } from "./dto/save-neighbor-form.dto";
 import { Response } from "express";
 import { UniversityService } from "../university/university.service";
 import { GenderService } from "../gender/gender.service";
+import { Session } from "../auth/session.decorator";
+import { SessionContainer } from "supertokens-node/lib/build/recipe/session/faunadb";
+import { AuthGuard } from "../auth/auth.guard";
 
-// В 6 лабе userId будет получаться не прямой передачей в методе
 @ApiTags("neighbor-form")
 @Controller()
 export class NeighbourFormController {
@@ -38,6 +40,7 @@ export class NeighbourFormController {
   }
 
   @ApiExcludeEndpoint()
+  @UseGuards(AuthGuard)
   @Get("/neighbor_form/new")
   async blankNeighbourForm(@Res() res: Response) {
     const universities = await this.universityService.getAllUniversities();
@@ -52,13 +55,13 @@ export class NeighbourFormController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Show own user's neighbor form" })
-  @ApiParam({ name: "id", type: "number", description: "User's id" })
   @ApiOkResponse({ description: "Everything is OK" })
   @ApiForbiddenResponse({ description: "NeighbourForm does not belong to this user" })
   @ApiNotFoundResponse({ description: "NeighbourForm for this user does not exist" })
-  @Get("/user/:id/neighbor-form")
-  async neighbourForm(@Param("id", new ParseIntPipe()) userId: number, @Res() res: Response) {
-    const neighbourForm = await this.neighbourFormService.getNeighbourFormByUserId(userId);
+  @UseGuards(AuthGuard)
+  @Get("/user/neighbor-form")
+  async neighbourForm(@Session() session: SessionContainer, @Res() res: Response) {
+    const neighbourForm = await this.neighbourFormService.getNeighbourFormByUserId(session.getUserId());
     if (neighbourForm == null) {
       return res.redirect("/neighbor_form/new");
     }
@@ -78,22 +81,22 @@ export class NeighbourFormController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Save(Create or change) own user's neighbor form" })
-  @ApiParam({ name: "id", type: "number", description: "User's id" })
-  @ApiCreatedResponse({ description: "NeighbourForm was created"})
-  @ApiBadRequestResponse( {description: "NeighbourForm invalid data"})
-  @Post("/user/:id/neighbor-form")
-  async saveNeighbourForm(@Param("id", new ParseIntPipe) userId: number,
+  @ApiCreatedResponse({ description: "NeighbourForm was created" })
+  @ApiBadRequestResponse({ description: "NeighbourForm invalid data" })
+  @UseGuards(AuthGuard)
+  @Post("/user/neighbor-form")
+  async saveNeighbourForm(@Session() session: SessionContainer,
                           @Body() saveNeighborFormDto: SaveNeighborFormDto) {
-    return await this.neighbourFormService.saveNeighbourForm(saveNeighborFormDto, userId);
+    return await this.neighbourFormService.saveNeighbourForm(saveNeighborFormDto, session.getUserId());
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Delete own user's neighbor form" })
-  @ApiParam({ name: "id", type: "number", description: "User's id" })
   @ApiOkResponse({ description: "Everything is OK" })
   @ApiNotFoundResponse({ description: "NeighbourForm for this user does not exist" })
+  @UseGuards(AuthGuard)
   @Delete("/user/:id/neighbor-form")
-  async deleteNeighbourForm(@Param("userId", new ParseIntPipe()) userId: number) {
-    return await this.neighbourFormService.deleteNeighbourForm(userId);
+  async deleteNeighbourForm(@Session() session: SessionContainer) {
+    return await this.neighbourFormService.deleteNeighbourForm(session.getUserId());
   }
 }

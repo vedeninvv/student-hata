@@ -15,7 +15,7 @@ export class NeighbourFormService {
     return this.prisma.neighbourForm.findMany();
   }
 
-  async getNeighbourFormByUserId(userId: number): Promise<NeighbourForm> {
+  async getNeighbourFormByUserId(userId: string): Promise<NeighbourForm> {
     return this.prisma.neighbourForm.findUnique({
       where: { userId: userId },
       rejectOnNotFound: () => {
@@ -24,8 +24,8 @@ export class NeighbourFormService {
     });
   }
 
-  async saveNeighbourForm(saveNeighborFormDto: SaveNeighborFormDto, userId: number): Promise<NeighbourForm> {
-    await this.deleteNeighbourForm(userId);
+  async saveNeighbourForm(saveNeighborFormDto: SaveNeighborFormDto, userId: string): Promise<NeighbourForm> {
+    //todo await this.deleteNeighbourForm(userId);
     const neighbourForm = await this.prisma.neighbourForm.create({
       data:
         {
@@ -52,7 +52,7 @@ export class NeighbourFormService {
   }
 
 
-  async deleteNeighbourForm(userId: number): Promise<NeighbourForm> {
+  async deleteNeighbourForm(userId: string): Promise<NeighbourForm> {
     try {
       return await this.prisma.neighbourForm.delete({
         where: { userId: userId },
