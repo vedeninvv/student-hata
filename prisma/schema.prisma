@@ -41,19 +41,9 @@ model FlatPost {
   preferredUniversities   FlatPostOnUniversityPreferred[]
   undesirableUniversities FlatPostOnUniversityUndesirable[]
   requirements            String?
-  //photos                  FlatPostPhoto[]
   author                  User                              @relation(fields: [authorId], references: [id])
   authorId                String
-  //FlatPostPhoto           FlatPostPhoto[]
 }
-
-//model FlatPostPhoto {
-//id         Int      @id @default(autoincrement())
-//name       String
-//path       String
-//flatPostId Int
-//flatPost   FlatPost @relation(fields: [flatPostId], references: [id])
-//}
 
 model Gender {
   id             Int                                @id @default(autoincrement())
