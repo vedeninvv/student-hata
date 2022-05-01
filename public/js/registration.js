@@ -26,7 +26,11 @@ window.onload = function() {
     });
     if (res.ok) {
       let resData = await res.json();
-      let user = { email: resData.user.email}
+      if (resData.status === "FIELD_ERROR") {
+        alert("Ошибка введенных данных. Проверьте Email и пароль (>8 символом, есть буквы и цифры)");
+        throw new Error(resData.status);
+      }
+      let user = { email: resData.user.email };
 
       let resNewUser = await fetch(baseUrl + "/user", {
         method: "POST",
@@ -36,7 +40,7 @@ window.onload = function() {
 
       window.location.href = baseUrl;
     } else {
-      location.reload();
+      alert("Проблемы с SuperTokens");
     }
   });
 };

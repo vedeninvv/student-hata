@@ -17,8 +17,8 @@ import { AuthModule } from "./auth/auth.module";
       apiKey: "uBYyv5UBI3mcYVbajHftfbHgvp=xBq",
       appInfo: {
         appName: "student-hata",
-        apiDomain: "https://student-hata.herokuapp.com",
-        websiteDomain: "https://student-hata.herokuapp.com",
+        apiDomain: "http://localhost:12345",
+        websiteDomain: "http://localhost:12345",
         apiBasePath: "/auth",
         websiteBasePath: "/test"
       }

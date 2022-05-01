@@ -25,9 +25,14 @@ window.onload = function() {
       body: JSON.stringify(data)
     });
     if (res.ok) {
+      let resData = await res.json();
+      if (resData.status === "WRONG_CREDENTIALS_ERROR") {
+        alert("Ошибка введенных данных");
+        throw new Error(resData.status);
+      }
       window.location.href = baseUrl;
     } else {
-      location.reload();
+      alert("Проблемы с SuperTokens");
     }
   });
 };
