@@ -9,7 +9,6 @@ import {
   ApiOperation,
   ApiTags
 } from "@nestjs/swagger";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { ChangeAccountDto } from "./dto/change-account.dto";
 import { Response } from "express";
 import { SessionContainer } from "supertokens-node/lib/build/recipe/session/faunadb";
@@ -33,35 +32,6 @@ export class UserController {
   @Render("registration")
   async registration() {
   }
-
-  @ApiOperation({ summary: "Create new user and blank account, which connected with user by one-to-one" })
-  @ApiCreatedResponse({ description: "User was created" })
-  @ApiBadRequestResponse({ description: "Invalid user data" })
-  @UseGuards(AuthGuard)
-  @Post("/user")
-  async createUser(@Body() createUserDto: CreateUserDto, @Session() session: SessionContainer) {
-    await this.userService.createUser(createUserDto, session.getUserId());
-  }
-
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: "Change password" })
-  // @ApiQuery({ name: "userId", type: "number" })
-  // @ApiCreatedResponse( { description: "Password was changed" })
-  // @ApiBadRequestResponse({ description: "Invalid password data" })
-  // @Put("/user/password")
-  // async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Query("userId") userId: string) {
-  //   return await this.userService.changePassword(changePasswordDto, userId);
-  // }
-  //
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: "Change email" })
-  // @ApiQuery({ name: "userId", type: "number" })
-  // @ApiCreatedResponse( { description: "Email was changed" })
-  // @ApiBadRequestResponse({ description: "Invalid email data" })
-  // @Put("/user/email")
-  // async changeEmail(@Body() changeEmailDto: ChangeEmailDto, @Query("userId") userId: string) {
-  //   return await this.userService.changeEmail(changeEmailDto, userId);
-  // }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change account info" })

@@ -3,6 +3,7 @@ import { DynamicModule, MiddlewareConsumer, Module, NestModule } from "@nestjs/c
 import { AuthMiddleware } from "./auth.middleware";
 import { AuthModuleConfig, ConfigInjectionToken } from "./config.interface";
 import { SupertokensService } from "./supertokens/supertokens.service";
+import { UserModule } from "../user/user.module";
 
 @Module({
   providers: [],
@@ -28,7 +29,7 @@ export class AuthModule implements NestModule {
         SupertokensService
       ],
       exports: [],
-      imports: [],
+      imports: [UserModule],
       module: AuthModule
     };
   }

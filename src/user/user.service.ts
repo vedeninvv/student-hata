@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ChangePasswordDto } from "./dto/change-password.dto";
 import { ChangeEmailDto } from "./dto/change-email.dto";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { ChangeAccountDto } from "./dto/change-account.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { Account, User } from "@prisma/client";
@@ -30,10 +29,10 @@ export class UserService {
   //   });
   // }
 
-  async createUser(createUserDto: CreateUserDto, userId: string): Promise<User> {
+  async createUser(email: string, userId: string): Promise<User> {
     return this.prisma.user.create({
       data: {
-        email: createUserDto.email,
+        email: email,
         id: userId,
         account: {
           create: {}

@@ -30,13 +30,6 @@ window.onload = function() {
         alert("Ошибка введенных данных. Проверьте Email и пароль (>8 символом, есть буквы и цифры)");
         throw new Error(resData.status);
       }
-      let user = { email: resData.user.email };
-
-      let resNewUser = await fetch(baseUrl + "/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user)
-      });
 
       window.location.href = baseUrl;
     } else {
