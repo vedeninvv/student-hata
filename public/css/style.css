@@ -374,6 +374,10 @@ header {
     background-color: #b2a200;
 }
 
+#account-name {
+    text-decoration: underline;
+}
+
 .footer {
     background-color: #333333;
     padding: 1% 0;
