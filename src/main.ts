@@ -9,6 +9,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { HttpExceptionFilter } from "./http-exception.filter";
 import supertokens from "supertokens-node";
 import { SupertokensExceptionFilter } from "./auth/auth.filter";
+require('dotenv').config();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -33,7 +34,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter(), new SupertokensExceptionFilter());
 
   app.enableCors({
-    origin: ['http://localhost:12345'],
+    origin: [process.env.API_DOMAIN],
     allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
     credentials: true,
   });

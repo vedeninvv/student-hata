@@ -8,19 +8,20 @@ import { PrismaModule } from "./prisma/prisma.module";
 import { GenderModule } from "./gender/gender.module";
 import { UniversityModule } from "./university/university.module";
 import { AuthModule } from "./auth/auth.module";
+require('dotenv').config();
 
 //todo hide in heroku env
 @Module({
   imports: [UserModule, FlatPostModule, NeighborFormModule, PrismaModule, GenderModule, UniversityModule,
     AuthModule.forRoot({
-      connectionURI: "https://082679e1c56911eca199e7bd956c96c9-ap-southeast-1.aws.supertokens.io:3573",
-      apiKey: "uBYyv5UBI3mcYVbajHftfbHgvp=xBq",
+      connectionURI: process.env.CONNECTIOIN_URI,
+      apiKey: process.env.API_KEY,
       appInfo: {
-        appName: "student-hata",
-        apiDomain: "http://localhost:12345",
-        websiteDomain: "http://localhost:12345",
-        apiBasePath: "/auth",
-        websiteBasePath: "/test"
+        appName: process.env.APP_NAME,
+        apiDomain: process.env.API_DOMAIN,
+        websiteDomain: process.env.WEBSITE_DOMAIN,
+        apiBasePath: process.env.API_BASE_PATH,
+        websiteBasePath: process.env.WEBSITE_BASE_PATH
       }
     })],
   controllers: [
