@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import supertokens from "supertokens-node";
-import Session from 'supertokens-node/recipe/session';
-import EmailPassword from 'supertokens-node/recipe/emailpassword';
+import Session from "supertokens-node/recipe/session";
+import EmailPassword from "supertokens-node/recipe/emailpassword";
 
-import { ConfigInjectionToken, AuthModuleConfig } from "../config.interface";
+import { AuthModuleConfig, ConfigInjectionToken } from "../config.interface";
 import { UserService } from "../../user/user.service";
 
 @Injectable()
@@ -13,7 +13,7 @@ export class SupertokensService {
       appInfo: config.appInfo,
       supertokens: {
         connectionURI: config.connectionURI,
-        apiKey: config.apiKey,
+        apiKey: config.apiKey
       },
       recipeList: [
         EmailPassword.init({
@@ -21,7 +21,7 @@ export class SupertokensService {
             apis: (originalImplementation) => {
               return {
                 ...originalImplementation,
-                signUpPOST: async function (input) {
+                signUpPOST: async function(input) {
 
                   if (originalImplementation.signUpPOST === undefined) {
                     throw Error("Should never come here");
@@ -37,16 +37,28 @@ export class SupertokensService {
                     // // These are the input form fields values that the user used while signing up
                     let formFields = input.formFields;
 
-                    await userService.createUser(email, id)
+                    await userService.createUser(email, id);
                   }
                   return response;
                 }
-              }
+              };
             }
           }
         }),
-        Session.init(),
-      ],
+        Session.init({
+          errorHandlers: {
+            onUnauthorised: async (message, request, response) => {
+              response.setStatusCode(401);
+              response.sendHTMLResponse(
+                "<!DOCTYPE html>\n" +
+                "<html lang=\"ru\">\n" +
+                "<head>\n" +
+                "<meta http-equiv=\"refresh\" content=\"1;URL=/login\" />" +
+                "</head>");
+            }
+          }
+        })
+      ]
     });
   }
 }
