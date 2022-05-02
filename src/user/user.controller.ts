@@ -57,4 +57,15 @@ export class UserController {
       account: account
     });
   }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Exit from account" })
+  @ApiOkResponse({ description: "successful exit" })
+  @UseGuards(AuthGuard)
+  @Post("/logout")
+  async postLogout(@Session() session: SessionContainer): Promise<string> {
+    await session.revokeSession();
+
+    return "successful exit";
+  }
 }
