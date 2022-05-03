@@ -18,6 +18,7 @@ export class NeighbourFormService {
   async getNeighbourFormByUserId(userId: string): Promise<NeighbourForm> {
     return this.prisma.neighbourForm.findUnique({
       where: { userId: userId },
+      include: { preferredGenders: true },
       rejectOnNotFound: () => {
         throw new HttpException("NeighbourForm not found", HttpStatus.NOT_FOUND);
       }
@@ -25,7 +26,10 @@ export class NeighbourFormService {
   }
 
   async saveNeighbourForm(saveNeighborFormDto: SaveNeighborFormDto, userId: string): Promise<NeighbourForm> {
-    //todo await this.deleteNeighbourForm(userId);
+    try {
+      await this.deleteNeighbourForm(userId);
+    } catch (e) {
+    }
     const neighbourForm = await this.prisma.neighbourForm.create({
       data:
         {
@@ -35,11 +39,12 @@ export class NeighbourFormService {
           preferredPrice: saveNeighborFormDto.preferredPrice,
           preferredPeopleNum: saveNeighborFormDto.preferredPeopleNum,
           preferredArea: saveNeighborFormDto.preferredArea,
-          requirementsForNeighbour: saveNeighborFormDto.requirementsForNeighbor,
+          requirementsForNeighbour: saveNeighborFormDto.requirementsForNeighbour,
           aboutMyself: saveNeighborFormDto.aboutMyself
         }
     });
-    for (let genderId in saveNeighborFormDto.preferredGenders) {
+    for (let i = 0; i < saveNeighborFormDto.preferredGenders.length; i++) {
+      let genderId = saveNeighborFormDto.preferredGenders[i];
       await this.prisma.preferredGendersOnNeighbourForms.create({
         data:
           {

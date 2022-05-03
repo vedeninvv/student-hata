@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Post, Render, Res, UseGuards } from "@nestjs/common";
 import { NeighbourFormService } from "./neighbour-form.service";
 import {
   ApiBadRequestResponse,
@@ -42,15 +42,8 @@ export class NeighbourFormController {
   @ApiExcludeEndpoint()
   @UseGuards(AuthGuard)
   @Get("/neighbor_form/new")
+  @Render("neighbor_form")
   async blankNeighbourForm(@Res() res: Response) {
-    const universities = await this.universityService.getAllUniversities();
-    const genders = await this.genderService.getAllGenders();
-    res.render("neighbor_form",
-      {
-        universities: universities,
-        genders: genders
-      }
-    );
   }
 
   @ApiBearerAuth()
@@ -62,21 +55,9 @@ export class NeighbourFormController {
   @Get("/user/neighbor-form")
   async neighbourForm(@Session() session: SessionContainer, @Res() res: Response) {
     const neighbourForm = await this.neighbourFormService.getNeighbourFormByUserId(session.getUserId());
-    if (neighbourForm == null) {
-      return res.redirect("/neighbor_form/new");
-    }
-    const universities = await this.universityService.getAllUniversities();
-    const genders = await this.genderService.getAllGenders();
-    res.render("neighbor_form",
-      {
-        form: neighbourForm,
-        universities: universities,
-        genders: genders
-      }
-    );
-    // res.status(HttpStatus.OK).json({
-    //   form: neighbourForm
-    // })
+    res.status(HttpStatus.OK).json({
+      neighbourForm: neighbourForm
+    })
   }
 
   @ApiBearerAuth()
@@ -95,7 +76,7 @@ export class NeighbourFormController {
   @ApiOkResponse({ description: "Everything is OK" })
   @ApiNotFoundResponse({ description: "NeighbourForm for this user does not exist" })
   @UseGuards(AuthGuard)
-  @Delete("/user/:id/neighbor-form")
+  @Delete("/user/neighbor-form")
   async deleteNeighbourForm(@Session() session: SessionContainer) {
     return await this.neighbourFormService.deleteNeighbourForm(session.getUserId());
   }

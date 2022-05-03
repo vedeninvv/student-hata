@@ -18,7 +18,7 @@ export class SaveNeighborFormDto {
   @ApiProperty()
   preferredArea: string;
   @ApiProperty()
-  requirementsForNeighbor: string;
+  requirementsForNeighbour: string;
   @ApiProperty()
   aboutMyself: string;
   @ApiProperty({ type: [Number] })
