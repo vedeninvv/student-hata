@@ -1,17 +1,44 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <link href="/css/flat-neighbor.css" rel="stylesheet">
   {{> common_css_js}}
+  <script src="/js/front-js/show-account.js"></script>
 
-  <title>Квартиры</title>
+  <title>Аккаунт</title>
 </head>
 <body>
 
 {{> header}}
 
 <main>
-  {{account.name}}
+  <h2>Аккаунт</h2>
+  <form id="form-account">
+    <div class="input-block">
+      <label for="form-account_name" class="form-label">Имя</label>
+      <input type="text" class="form-control" id="form-account_name" name="name" autocomplete="off">
+    </div>
+    <div class="input-block">
+      <label for="form-account_surname" class="form-label">Фамилия</label>
+      <input type="text" class="form-control" id="form-account_surname" name="surname" autocomplete="off">
+    </div>
+    <div class="input-block">
+      <label for="form-account_genderId" class="form-label">Гендер</label>
+      <select type="text" class="form-control" id="form-account_genderId" name="genderId" autocomplete="off">
+        <option value="0">Female</option>
+        <option value="1">Male</option>
+      </select>
+    </div>
+    <div class="input-block">
+      <label for="form-account_contactEmail" class="form-label">Контактная почта</label>
+      <input type="text" class="form-control" id="form-account_contactEmail" name="contactEmail" autocomplete="off">
+    </div>
+    <div class="input-block">
+      <label for="form-account_phone" class="form-label">Телефон</label>
+      <input type="text" class="form-control" id="form-account_phone" name="phone" autocomplete="off">
+    </div>
+
+    <button type="submit" class="btn-save">Сохранить</button>
+  </form>
 </main>
 
 {{> footer}}

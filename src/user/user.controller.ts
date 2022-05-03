@@ -33,6 +33,13 @@ export class UserController {
   async registration() {
   }
 
+  @ApiExcludeEndpoint()
+  @UseGuards(AuthGuard)
+  @Get("/user/show-account")
+  @Render("account")
+  async showAccount() {
+  }
+
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change account info" })
   @ApiCreatedResponse({ description: "Account data was changed" })
@@ -50,9 +57,6 @@ export class UserController {
   @Get("/user/account")
   async accountInfo(@Session() session: SessionContainer, @Res() res: Response) {
     const account = await this.userService.getAccountByUserId(session.getUserId());
-    // res.render("account",
-    //   { account: account }
-    // );
     res.status(HttpStatus.OK).json({
       account: account
     });

@@ -10,7 +10,6 @@ import { UniversityModule } from "./university/university.module";
 import { AuthModule } from "./auth/auth.module";
 require('dotenv').config();
 
-//todo hide in heroku env
 @Module({
   imports: [UserModule, FlatPostModule, NeighborFormModule, PrismaModule, GenderModule, UniversityModule,
     AuthModule.forRoot({
