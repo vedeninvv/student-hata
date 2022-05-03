@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -36,17 +36,24 @@ export class FlatPostController {
   constructor(private readonly flatPostService: FlatPostService) {
   }
 
+  @ApiExcludeEndpoint()
+  @Get("/show-flats")
+  @Render("flats")
+  showFlats(){
+  }
+
   @ApiOperation({ summary: "Show all flat's posts" })
   @ApiOkResponse({ description: "Everything is OK" })
+  @ApiQuery({ name: "start", type: "number" })
+  @ApiQuery({ name: "end", type: "number" })
   @Get()
-  async flats(@Res() res: Response) {
-    const flats = await this.flatPostService.getAllFlatPostsWithAccountInfo();
-    res.render("flats", {
+  async flats(@Res() res: Response,
+              @Query("start", new ParseIntPipe()) start: number,
+              @Query("end", new ParseIntPipe()) end: number) {
+    const flats = await this.flatPostService.getFlatPostsWithAccountInfo(start, end);
+    res.status(HttpStatus.OK).json({
       flats: flats
-    });
-    // res.status(HttpStatus.OK).json({
-    //   flats: flats
-    // })
+    })
   }
 
   @ApiExcludeEndpoint()

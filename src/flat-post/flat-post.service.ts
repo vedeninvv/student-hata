@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotImplementedException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { FlatPostDto } from "./dto/flat-post.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
@@ -16,8 +16,10 @@ export class FlatPostService {
     return this.prisma.flatPost.findMany();
   }
 
-  async getAllFlatPostsWithAccountInfo(): Promise<FlatPostWithAccountInfoDto[]> {
+  async getFlatPostsWithAccountInfo(start: number, end: number): Promise<FlatPostWithAccountInfoDto[]> {
     const flatPosts = await this.prisma.flatPost.findMany({
+      skip: start,
+      take: end - start,
       include: {
         author: true,
         preferredUniversities: true,
@@ -28,16 +30,15 @@ export class FlatPostService {
     for (let i = 0; i < flatPosts.length; i++) {
       const flatPost = flatPosts[i];
       const account = await this.userService.getAccountByUserId(flatPost.author.id);
-      if (!account.filled) {
-        continue;
-      }
       let preferredUniversitiesString = "";
-      for (let preferredUniversity in flatPost.preferredUniversities) {
+      for (let i = 0; i < flatPost.preferredUniversities.length; i++) {
+        let preferredUniversity = flatPost.preferredUniversities[i].universityId;
         preferredUniversitiesString += (await this.universityService
           .getUniversityById(Number(preferredUniversity))).name + " ";
       }
       let undesirableUniversitiesString = "";
-      for (let undesirableUniversity in flatPost.undesirableUniversities) {
+      for (let i = 0; i < flatPost.undesirableUniversities.length; i++) {
+        let undesirableUniversity = flatPost.undesirableUniversities[i].universityId;
         undesirableUniversitiesString += (await this.universityService
           .getUniversityById(Number(undesirableUniversity))).name + " ";
       }
@@ -65,7 +66,8 @@ export class FlatPostService {
         author: { connect: { id: userId } }
       }
     });
-    for (let preferredUniversityId in createFlatPostDto.preferredUniversityIds) {
+    for (let i = 0; i < createFlatPostDto.preferredUniversityIds.length; i++) {
+      let preferredUniversityId = createFlatPostDto.preferredUniversityIds[i];
       await this.prisma.flatPostOnUniversityPreferred.create({
         data: {
           flatPost: { connect: { id: flatPosts.id } },
@@ -73,7 +75,8 @@ export class FlatPostService {
         }
       });
     }
-    for (let undesirableUniversityId in createFlatPostDto.undesirableUniversityIds) {
+    for (let i = 0; i < createFlatPostDto.undesirableUniversityIds.length; i++) {
+      let undesirableUniversityId = createFlatPostDto.undesirableUniversityIds[i];
       await this.prisma.flatPostOnUniversityUndesirable.create({
         data: {
           flatPost: { connect: { id: flatPosts.id } },

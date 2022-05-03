@@ -49,7 +49,7 @@ async function postNeighbourForm(event) {
   if (res.ok) {
     location.reload();
   } else {
-    alert("Неверный запрос. Заполните все поля");
+    alert("Неверный запрос. Проверьте введенные данные");
   }
 }
 

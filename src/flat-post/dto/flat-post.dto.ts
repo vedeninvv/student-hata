@@ -22,7 +22,4 @@ export class FlatPostDto {
   @ApiProperty({ type: [Number] })
   @IsArray()
   undesirableUniversityIds: number[];
-
-  // coming soon...
-  //flatPostPhotoId: number
 }

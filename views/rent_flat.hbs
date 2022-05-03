@@ -1,57 +1,61 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    {{> common_css_js}}
-    <title>Сдать квартиру</title>
+  {{> common_css_js}}
+  <script src="/js/front-js/rent_flat.js"></script>
+  <title>Сдать квартиру</title>
 </head>
 <body>
 
 {{> header}}
 
 <main>
-    <form class="questionnaire-form" method="post">
-        <div class="input-block">
-            <label for="address" class="form-label">Адрес: </label>
-            <input type="text" class="form-control" id="address" name="address" placeholder="Приморский район, улица..."
-                   autocomplete="off" value="{{flat.address}}">
-        </div>
-        <div class="input-block">
-            <label for="price" class="form-label">Цена: </label>
-            <input id="price" type="number" value="{{flat.price}}" min="0" max="1000000000" step="1"
-                   class="form-control" name="price">
-        </div>
-        <div class="input-block">
-            <label for="numNeighbors" class="form-label">Макс. число жильцов: </label>
-            <input id="numNeighbors" type="number" value="{{flat.maxPeople}}" min="1" max="6" step="1"
-                   class="form-control" name="maxPeople">
-        </div>
-        <div class="input-block">
-            <label for="description" class="form-label">Описание: </label>
-            <textarea class="form-control-textarea" id="description" name="description"
-                      placeholder="Квартира с хорошим ремонтом..." autocomplete="off" rows="4">{{flat.description}}</textarea>
-        </div>
-<!--      Надо сделать как-то отправку массива-->
-<!--        <div class="input-block">-->
-<!--            <label for="preferred_university" class="form-label">Предпочитаемые университеты: </label>-->
-<!--            <input type="text" class="form-control" id="preferred_university" name="preferred_university"-->
-<!--                   placeholder="ИТМО" autocomplete="off">-->
-<!--        </div>-->
-<!--        <div class="input-block">-->
-<!--            <label for="unpreferred_university" class="form-label">Нежелательные университеты: </label>-->
-<!--            <input type="text" class="form-control" id="unpreferred_university" name="unpreferred_university"-->
-<!--                   placeholder="СибАДИ" autocomplete="off">-->
-<!--        </div>-->
-        <div class="input-block">
-            <label for="restrictions" class="form-label">Требования к съемщикам: </label>
-            <textarea class="form-control-textarea" id="restrictions" name="requirements"
-                      placeholder="Животные не разрешены" autocomplete="off" rows="4">{{flat.requirements}}</textarea>
-        </div>
-<!--        <div class="input-block">-->
-<!--            <label for="photo" class="form-label">Фото</label>-->
-<!--            <input class="form-control" type="file" id="photo">-->
-<!--        </div>-->
-        <button type="submit" class="btn-save">Сохранить</button>
-    </form>
+  <form class="questionnaire-form" id="form-flatPost">
+    <div class="input-block">
+      <label for="address" class="form-label">Адрес: </label>
+      <input type="text" class="form-control" id="address" name="address" placeholder="Приморский район, улица..."
+             autocomplete="off">
+    </div>
+    <div class="input-block">
+      <label for="price" class="form-label">Цена: </label>
+      <input id="price" type="number" min="0" max="1000000000" step="1"
+             class="form-control" name="price">
+    </div>
+    <div class="input-block">
+      <label for="maxPeople" class="form-label">Макс. число жильцов: </label>
+      <input id="maxPeople" type="number" min="1" max="6" step="1"
+             class="form-control" name="maxPeople">
+    </div>
+    <div class="input-block">
+      <label for="description" class="form-label">Описание: </label>
+      <textarea class="form-control-textarea" id="description" name="description"
+                placeholder="Квартира с хорошим ремонтом..." autocomplete="off" rows="4"></textarea>
+    </div>
+    <div class="input-block">
+      <label for="requirements" class="form-label">Требования к съемщикам: </label>
+      <textarea class="form-control-textarea" id="requirements" name="requirements"
+                placeholder="Животные не разрешены" autocomplete="off" rows="4"></textarea>
+    </div>
+    <div class="input-block">
+      <label for="preferredUniversityIds" class="form-label">Предпочитаемые университеты: </label>
+      <select class="form-control" id="preferredUniversityIds" multiple name="preferredUniversityIds">
+        <option value="0">ITMO</option>
+        <option value="1">SPBGU</option>
+        <option value="2">LETI</option>
+        <option value="3">SPBPU</option>
+      </select>
+    </div>
+    <div class="input-block">
+      <label for="undesirableUniversityIds" class="form-label">Нежелательные университеты: </label>
+      <select class="form-control" id="undesirableUniversityIds" multiple name="undesirableUniversityIds">
+        <option value="0">ITMO</option>
+        <option value="1">SPBGU</option>
+        <option value="2">LETI</option>
+        <option value="3">SPBPU</option>
+      </select>
+    </div>
+    <button type="submit" class="btn-save">Создать</button>
+  </form>
 </main>
 
 {{> footer}}
