@@ -28,21 +28,4 @@ export class NeighbourFormWithAccountInfoDto {
   aboutMyself: string;
   @ApiProperty()
   preferredGenders: string;
-
-
-  constructor(name: string, surname: string, gender: string, university: string, faculty: string, preferredPrice: number,
-              preferredPeopleNum: number, preferredArea: string, requirementsForNeighbor: string, aboutMyself: string,
-              preferredGenders: string) {
-    this.name = name;
-    this.surname = surname;
-    this.gender = gender;
-    this.university = university;
-    this.faculty = faculty;
-    this.preferredPrice = preferredPrice;
-    this.preferredPeopleNum = preferredPeopleNum;
-    this.preferredArea = preferredArea;
-    this.requirementsForNeighbor = requirementsForNeighbor;
-    this.aboutMyself = aboutMyself;
-    this.preferredGenders = preferredGenders;
-  }
 }

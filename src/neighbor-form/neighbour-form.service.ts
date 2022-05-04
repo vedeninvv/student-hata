@@ -87,20 +87,19 @@ export class NeighbourFormService {
       for (let preferredGender in neighbourForm.preferredGenders) {
         preferredGendersString += (await this.genderService.getGenderById(Number(preferredGender))).genderName + " ";
       }
-      allNeighbours.push(new NeighbourFormWithAccountInfoDto(
-          account.name,
-          account.surname,
-          gender.genderName,
-          neighbourForm.university.name,
-          neighbourForm.faculty,
-          neighbourForm.preferredPrice,
-          neighbourForm.preferredPeopleNum,
-          neighbourForm.preferredArea,
-          neighbourForm.requirementsForNeighbour,
-          neighbourForm.aboutMyself,
-          preferredGendersString
-        )
-      );
+      let neighbourFormWithAccountInfoDto = new NeighbourFormWithAccountInfoDto();
+      neighbourFormWithAccountInfoDto.name = account.name;
+      neighbourFormWithAccountInfoDto.surname = account.surname;
+      neighbourFormWithAccountInfoDto.gender = gender.genderName;
+      neighbourFormWithAccountInfoDto.university = neighbourForm.university.name;
+      neighbourFormWithAccountInfoDto.faculty = neighbourForm.faculty;
+      neighbourFormWithAccountInfoDto.preferredPrice = neighbourForm.preferredPrice;
+      neighbourFormWithAccountInfoDto.preferredPeopleNum = neighbourForm.preferredPeopleNum;
+      neighbourFormWithAccountInfoDto.preferredArea = neighbourForm.preferredArea;
+      neighbourFormWithAccountInfoDto.requirementsForNeighbor = neighbourForm.requirementsForNeighbour;
+      neighbourFormWithAccountInfoDto.aboutMyself = neighbourForm.aboutMyself;
+      neighbourFormWithAccountInfoDto.preferredGenders = preferredGendersString;
+      allNeighbours.push(neighbourFormWithAccountInfoDto);
     }
     return allNeighbours;
   }
