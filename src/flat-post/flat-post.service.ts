@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { FlatPostDto } from "./dto/flat-post.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
@@ -96,11 +96,11 @@ export class FlatPostService {
       },
       rejectOnNotFound:
         () => {
-          throw new HttpException("Flat not found", HttpStatus.NOT_FOUND);
+          throw new NotFoundException("Flat not found");
         }
     });
     if (flatPost.authorId != userId)
-      throw new HttpException("Request was not sent by the author of flat", HttpStatus.FORBIDDEN);
+      throw new ForbiddenException("Request was not sent by the author of flat");
     return flatPost;
   }
 
