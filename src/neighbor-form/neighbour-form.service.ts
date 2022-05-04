@@ -79,9 +79,6 @@ export class NeighbourFormService {
     for (let i = 0; i < neighbourForms.length; i++) {
       const neighbourForm = neighbourForms[i];
       const account = await this.userService.getAccountByUserId(neighbourForm.userId);
-      if (!account.filled) {
-        continue;
-      }
       const gender = await this.genderService.getGenderById(account.genderId);
       let preferredGendersString = "";
       for (let preferredGender in neighbourForm.preferredGenders) {
