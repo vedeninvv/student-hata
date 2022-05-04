@@ -3,6 +3,8 @@
 <head>
   {{> common_css_js}}
   <link href="/css/flat-neighbor.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="/js/front-js/notifications.js"></script>
   <title>Соседи</title>
 </head>
 <body>
@@ -11,56 +13,56 @@
 
 <main>
   <div class="flat-neighbors-list">
-  {{#each neighbours}}
-    <div class="flat-neighbors-list__elem">
-      <img src="/media/neighbor-pic-example.png">
-      <div class="characteristic-list">
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Имя: </span>
-          <span class="characteristic-list-line__value">{{this.name}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Фамилия: </span>
-          <span class="characteristic-list-line__value">{{this.surname}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Гендер: </span>
-          <span class="characteristic-list-line__value">{{this.gender}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Университет: </span>
-          <span class="characteristic-list-line__value">{{this.university}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Факультет: </span>
-          <span class="characteristic-list-line__value">{{this.faculty}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Предпочитаемая цена: </span>
-          <span class="characteristic-list-line__value">{{this.preferredPrice}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Предпочитаемое число людей: </span>
-          <span class="characteristic-list-line__value">{{this.preferredPeopleNum}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Предпочитаемое место: </span>
-          <span class="characteristic-list-line__value">{{this.preferredArea}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Требования к соседу: </span>
-          <span class="characteristic-list-line__value">{{this.requirementsForNeighbor}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">О себе: </span>
-          <span class="characteristic-list-line__value">{{this.aboutMyself}}</span>
-        </div>
-        <div class="characteristic-list-line">
-          <span class="characteristic-list-line__title">Предпочитаемые гендеры: </span>
-          <span class="characteristic-list-line__value">{{this.preferredGenders}}</span>
+    {{#each neighbours}}
+      <div class="flat-neighbors-list__elem">
+        <img src="/media/neighbor-pic-example.png">
+        <div class="characteristic-list">
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Имя: </span>
+            <span class="characteristic-list-line__value">{{this.name}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Фамилия: </span>
+            <span class="characteristic-list-line__value">{{this.surname}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Гендер: </span>
+            <span class="characteristic-list-line__value">{{this.gender}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Университет: </span>
+            <span class="characteristic-list-line__value">{{this.university}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Факультет: </span>
+            <span class="characteristic-list-line__value">{{this.faculty}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Предпочитаемая цена: </span>
+            <span class="characteristic-list-line__value">{{this.preferredPrice}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Предпочитаемое число людей: </span>
+            <span class="characteristic-list-line__value">{{this.preferredPeopleNum}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Предпочитаемое место: </span>
+            <span class="characteristic-list-line__value">{{this.preferredArea}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Требования к соседу: </span>
+            <span class="characteristic-list-line__value">{{this.requirementsForNeighbor}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">О себе: </span>
+            <span class="characteristic-list-line__value">{{this.aboutMyself}}</span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Предпочитаемые гендеры: </span>
+            <span class="characteristic-list-line__value">{{this.preferredGenders}}</span>
+          </div>
         </div>
       </div>
-    </div>
     {{/each}}
   </div>
 </main>

@@ -3,6 +3,8 @@
 <head>
   {{> common_css_js}}
   <script src="/js/front-js/neighbor_form.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="/js/front-js/notifications.js"></script>
   <title>Анкета</title>
 </head>
 <body>
@@ -47,7 +49,8 @@
     </div>
     <div class="input-block">
       <label for="aboutMyself" class="form-label">О себе</label>
-      <textarea class="form-control-textarea" id="aboutMyself" name="aboutMyself" autocomplete="off" rows="4"></textarea>
+      <textarea class="form-control-textarea" id="aboutMyself" name="aboutMyself" autocomplete="off"
+                rows="4"></textarea>
     </div>
     <div class="input-block">
       <label for="preferredGenders" class="form-label">Предпочитаемые гендеры: </label>

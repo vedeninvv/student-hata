@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    {{> common_css_js}}
-    <link href="/css/todoList.css" rel="stylesheet">
-    <title>TodoList</title>
+  {{> common_css_js}}
+  <link href="/css/todoList.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="/js/front-js/notifications.js"></script>
+  <title>TodoList</title>
 </head>
 <body>
 
 {{> header}}
 
 <main>
-    <div class="todo-block">
-        <label for="todo-list-input" class="todo-label">Todo List</label>
-        <form id="todo-list-form">
-            <input class="todo-input" id="todo-list-input" type="text" autocomplete="off" required>
-            <button class="todo-button-submit" type="submit">&#8594;</button>
-        </form>
+  <div class="todo-block">
+    <label for="todo-list-input" class="todo-label">Todo List</label>
+    <form id="todo-list-form">
+      <input class="todo-input" id="todo-list-input" type="text" autocomplete="off" required>
+      <button class="todo-button-submit" type="submit">&#8594;</button>
+    </form>
 
-        <ol class="todo-item-list">
-<!--            <li class="todo-item__undone">Текст<button class="delete-item-button delete-item-button-not-displayed">&#10008;</button></li>-->
-        </ol>
-    </div>
+    <ol class="todo-item-list">
+      <!--            <li class="todo-item__undone">Текст<button class="delete-item-button delete-item-button-not-displayed">&#10008;</button></li>-->
+    </ol>
+  </div>
 </main>
 
 {{> footer}}
 
 <template id="li-temp">
-    <li class="todo-item__undone"><button class="delete-item-button delete-item-button-not-displayed">&#10008;</button></li>
+  <li class="todo-item__undone">
+    <button class="delete-item-button delete-item-button-not-displayed">&#10008;</button>
+  </li>
 </template>
 
 <script src="/js/todoList.js"></script>
