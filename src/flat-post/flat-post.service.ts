@@ -90,6 +90,10 @@ export class FlatPostService {
   async findFlatPostById(flatId: number, userId: string): Promise<FlatPost> {
     const flatPost = await this.prisma.flatPost.findUnique({
       where: { id: flatId },
+      include: {
+        preferredUniversities: true,
+        undesirableUniversities: true
+      },
       rejectOnNotFound:
         () => {
           throw new HttpException("Flat not found", HttpStatus.NOT_FOUND);
@@ -98,6 +102,12 @@ export class FlatPostService {
     if (flatPost.authorId != userId)
       throw new HttpException("Request was not sent by the author of flat", HttpStatus.FORBIDDEN);
     return flatPost;
+  }
+
+  async findFlatPostsByUserId(userId: string): Promise<FlatPost[]> {
+    return await this.prisma.flatPost.findMany({
+      where: { authorId: userId }
+    });
   }
 
   async changeFlatPost(flatPostDto: FlatPostDto, flatId: number, userId: string): Promise<FlatPost> {

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <link href="/css/flat-neighbor.css" rel="stylesheet">
   {{> common_css_js}}
   <script src="/js/front-js/account.js"></script>
 
@@ -39,6 +40,37 @@
 
     <button type="submit" class="btn-save">Сохранить</button>
   </form>
+
+  <h2>Квартиры</h2>
+  <div class="flat-neighbors-list">
+    <template id="template-flatPost">
+      <div class="flat-neighbors-list__elem">
+        <img src="/media/flat-pic-example.png">
+        <div class="characteristic-list">
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Адрес</span>
+            <span class="characteristic-list-line__value"></span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Цена: </span>
+            <span class="characteristic-list-line__value"></span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Максимальное число жильцов: </span>
+            <span class="characteristic-list-line__value"></span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Описание: </span>
+            <span class="characteristic-list-line__value"></span>
+          </div>
+          <div class="characteristic-list-line">
+            <span class="characteristic-list-line__title">Требования к жильцам: </span>
+            <span class="characteristic-list-line__value"></span>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
 </main>
 
 {{> footer}}
