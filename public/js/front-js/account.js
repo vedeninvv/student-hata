@@ -41,4 +41,70 @@ async function fillAccount() {
   form.addEventListener("submit", postAccount);
 }
 
+function addDeleteButton(list, id) {
+  let button = document.createElement("button");
+  button.id = id;
+  button.innerText = "УДАЛИТЬ";
+  button.classList.add("btn-save");
+  button.addEventListener("click", async function() {
+    let res = await fetch(baseUrl + "/flats/" + id, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" }
+    });
+    if (res.ok) {
+      location.reload();
+    } else {
+      alert("Данной квартиры не существует");
+    }
+  });
+  list.appendChild(button);
+}
+
+function addDetailsButton(list, id) {
+  let button = document.createElement("button");
+  button.id = id;
+  button.innerText = "подробнее";
+  button.classList.add("btn-details");
+
+  let a = document.createElement("a");
+  a.appendChild(button);
+  a.href = "/flats/show-flat/" + id;
+
+  list.appendChild(a);
+}
+
+function addFlatHTMLToList(list, template, flatPost) {
+  const newElem = template.content.cloneNode(true);
+  list.appendChild(newElem);
+
+  let elems = document.getElementsByClassName("flat-neighbors-list__elem");
+  let elem = elems[elems.length - 1];
+  let values = elem.getElementsByClassName("characteristic-list-line__value");
+
+  values[0].innerText = flatPost.address;
+  values[1].innerText = flatPost.price;
+  values[2].innerText = flatPost.maxPeople;
+  values[3].innerText = flatPost.description;
+  values[4].innerText = flatPost.requirements;
+}
+
+async function allUserFlatPosts() {
+  const list = document.getElementsByClassName("flat-neighbors-list")[0];
+  const template = document.getElementById("template-flatPost");
+
+  let res = await fetch(baseUrl + "/flats/user-flats");
+  if (res.ok) {
+    let flatPosts = (await res.json()).flatPosts;
+    for (let i = 0; i < flatPosts.length; i++) {
+      addFlatHTMLToList(list, template, flatPosts[i]);
+      addDeleteButton(list, flatPosts[i].id);
+      addDetailsButton(list, flatPosts[i].id);
+    }
+  } else {
+    alert("Что-то пошло не так... Попробуйте позже");
+  }
+
+}
+
 window.addEventListener("load", fillAccount);
+window.addEventListener("load", allUserFlatPosts);

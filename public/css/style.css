@@ -370,6 +370,18 @@ header {
     float: right;
 }
 
+.btn-details {
+    background-color: #FFD639;
+    color: #000000;
+    padding: 15% 60%;
+    text-align: center;
+    display: block;
+    font-size: 1em;
+    border: none;
+    float: left;
+    margin-left: -60%;
+}
+
 .btn-save:hover {
     background-color: #b2a200;
 }

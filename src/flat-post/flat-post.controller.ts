@@ -2,7 +2,8 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpStatus,
+  Get,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -16,12 +17,14 @@ import { FlatPostService } from "./flat-post.service";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiCreatedResponse,ApiExcludeEndpoint,
+  ApiCreatedResponse,
+  ApiExcludeEndpoint,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,ApiQuery,
+  ApiParam,
+  ApiQuery,
   ApiTags
 } from "@nestjs/swagger";
 import { FlatPostDto } from "./dto/flat-post.dto";
@@ -39,7 +42,7 @@ export class FlatPostController {
   @ApiExcludeEndpoint()
   @Get("/show-flats")
   @Render("flats")
-  showFlats(){
+  showFlats() {
   }
 
   @ApiOperation({ summary: "Show all flat's posts" })
@@ -50,10 +53,10 @@ export class FlatPostController {
   async flats(@Res() res: Response,
               @Query("start", new ParseIntPipe()) start: number,
               @Query("end", new ParseIntPipe()) end: number) {
-    const flats = await this.flatPostService.getFlatPostsWithAccountInfo(start, end);
+    const flatPosts = await this.flatPostService.getFlatPostsWithAccountInfo(start, end);
     res.status(HttpStatus.OK).json({
-      flats: flats
-    })
+      flats: flatPosts
+    });
   }
 
   @ApiExcludeEndpoint()
@@ -61,6 +64,13 @@ export class FlatPostController {
   @Get("/new-flat")
   @Render("rent_flat")
   showBlankFlatPost() {
+  }
+
+  @ApiExcludeEndpoint()
+  @UseGuards(AuthGuard)
+  @Get("/show-flat/:flatId")
+  @Render("change_flat")
+  showFilledFlatPost() {
   }
 
   @ApiBearerAuth()
@@ -74,31 +84,40 @@ export class FlatPostController {
   }
 
   @ApiBearerAuth()
+  @ApiOperation({ summary: "Show flat's post which belong to current user" })
+  @ApiOkResponse({ description: "Everything is OK" })
+  @UseGuards(AuthGuard)
+  @Get("/user-flats")
+  async getFlatPostsByCurrentUser(@Session() session: SessionContainer, @Res() res: Response) {
+    const flatPosts = await this.flatPostService.findFlatPostsByUserId(session.getUserId());
+    return res.status(HttpStatus.OK).json({
+      flatPosts: flatPosts
+    });
+  }
+
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Show flat's post with data to change it" })
   @ApiParam({ name: "flatId", type: "number" })
   @ApiOkResponse({ description: "Everything is OK" })
   @ApiForbiddenResponse({ description: "Current user is not an flatPost's author" })
-  @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
+  @ApiNotFoundResponse({ description: "FlatPost with this id does not exist" })
   @UseGuards(AuthGuard)
   @Get("/:flatId")
-  async showFlatPost(@Session() session: SessionContainer,
-                     @Param("flatId", new ParseIntPipe()) flatId: number,
-                     @Res() res: Response) {
-    const flat = await this.flatPostService.findFlatPostById(flatId, session.getUserId());
-    res.render("rent_flat", {
-      flat: flat
-    });
-    // res.status(HttpStatus.OK).json({
-    //   flat: flat
-    // })
+  async getFlatPost(@Session() session: SessionContainer,
+                    @Param("flatId", new ParseIntPipe()) flatId: number,
+                    @Res() res: Response) {
+    const flatPost = await this.flatPostService.findFlatPostById(flatId, session.getUserId());
+    res.status(HttpStatus.OK).json({
+      flatPost: flatPost
+    })
   }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: "Change flat's post" })
   @ApiParam({ name: "flatId", type: "number" })
-  @ApiCreatedResponse({ description: "FlatPost was changed"})
-  @ApiForbiddenResponse({ description: "Current user is not an flatPost's author"})
-  @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
+  @ApiCreatedResponse({ description: "FlatPost was changed" })
+  @ApiForbiddenResponse({ description: "Current user is not an flatPost's author" })
+  @ApiNotFoundResponse({ description: "FlatPost with this id does not exist" })
   @ApiBadRequestResponse({ description: "Invalid flatPost data" })
   @UseGuards(AuthGuard)
   @Put("/:flatId")
@@ -112,8 +131,8 @@ export class FlatPostController {
   @ApiOperation({ summary: "Delete flat's post" })
   @ApiParam({ name: "flatId", type: "number" })
   @ApiOkResponse({ description: "Everything is OK" })
-  @ApiForbiddenResponse({ description: "Current user is not an flatPost's author"})
-  @ApiNotFoundResponse({description: "FlatPost with this id does not exist"})
+  @ApiForbiddenResponse({ description: "Current user is not an flatPost's author" })
+  @ApiNotFoundResponse({ description: "FlatPost with this id does not exist" })
   @UseGuards(AuthGuard)
   @Delete("/:flatId")
   async deleteFlatPost(@Session() session: SessionContainer,

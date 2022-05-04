@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { SaveNeighborFormDto } from "./dto/save-neighbor-form.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { NeighbourForm } from "@prisma/client";
@@ -20,7 +20,7 @@ export class NeighbourFormService {
       where: { userId: userId },
       include: { preferredGenders: true },
       rejectOnNotFound: () => {
-        throw new HttpException("NeighbourForm not found", HttpStatus.NOT_FOUND);
+        throw new NotFoundException("NeighbourForm not found");
       }
     });
   }
@@ -64,7 +64,7 @@ export class NeighbourFormService {
         include: { preferredGenders: true }
       });
     } catch (e) {
-      throw new HttpException("NeighbourForm not found when try to delete", HttpStatus.NOT_FOUND);
+      throw new NotFoundException("NeighbourForm not found when try to delete");
     }
   }
 
@@ -87,20 +87,19 @@ export class NeighbourFormService {
       for (let preferredGender in neighbourForm.preferredGenders) {
         preferredGendersString += (await this.genderService.getGenderById(Number(preferredGender))).genderName + " ";
       }
-      allNeighbours.push(new NeighbourFormWithAccountInfoDto(
-          account.name,
-          account.surname,
-          gender.genderName,
-          neighbourForm.university.name,
-          neighbourForm.faculty,
-          neighbourForm.preferredPrice,
-          neighbourForm.preferredPeopleNum,
-          neighbourForm.preferredArea,
-          neighbourForm.requirementsForNeighbour,
-          neighbourForm.aboutMyself,
-          preferredGendersString
-        )
-      );
+      let neighbourFormWithAccountInfoDto = new NeighbourFormWithAccountInfoDto();
+      neighbourFormWithAccountInfoDto.name = account.name;
+      neighbourFormWithAccountInfoDto.surname = account.surname;
+      neighbourFormWithAccountInfoDto.gender = gender.genderName;
+      neighbourFormWithAccountInfoDto.university = neighbourForm.university.name;
+      neighbourFormWithAccountInfoDto.faculty = neighbourForm.faculty;
+      neighbourFormWithAccountInfoDto.preferredPrice = neighbourForm.preferredPrice;
+      neighbourFormWithAccountInfoDto.preferredPeopleNum = neighbourForm.preferredPeopleNum;
+      neighbourFormWithAccountInfoDto.preferredArea = neighbourForm.preferredArea;
+      neighbourFormWithAccountInfoDto.requirementsForNeighbor = neighbourForm.requirementsForNeighbour;
+      neighbourFormWithAccountInfoDto.aboutMyself = neighbourForm.aboutMyself;
+      neighbourFormWithAccountInfoDto.preferredGenders = preferredGendersString;
+      allNeighbours.push(neighbourFormWithAccountInfoDto);
     }
     return allNeighbours;
   }

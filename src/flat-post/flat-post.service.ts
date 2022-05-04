@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { FlatPostDto } from "./dto/flat-post.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
@@ -42,15 +42,17 @@ export class FlatPostService {
         undesirableUniversitiesString += (await this.universityService
           .getUniversityById(Number(undesirableUniversity))).name + " ";
       }
-      flatPostsWithAccountInfoDto.push(
-        new FlatPostWithAccountInfoDto(
-          flatPost,
-          preferredUniversitiesString,
-          undesirableUniversitiesString,
-          account.name,
-          account.surname
-        )
-      );
+      let flatPostWithAccountInfoDto = new FlatPostWithAccountInfoDto();
+      flatPostWithAccountInfoDto.address = flatPost.address;
+      flatPostWithAccountInfoDto.price = flatPost.price;
+      flatPostWithAccountInfoDto.maxPeople = flatPost.maxPeople;
+      flatPostWithAccountInfoDto.description = flatPost.description;
+      flatPostWithAccountInfoDto.requirements = flatPost.requirements;
+      flatPostWithAccountInfoDto.preferredUniversities = preferredUniversitiesString;
+      flatPostWithAccountInfoDto.undesirableUniversities = undesirableUniversitiesString;
+      flatPostWithAccountInfoDto.name = account.name;
+      flatPostWithAccountInfoDto.surname = account.surname;
+      flatPostsWithAccountInfoDto.push(flatPostWithAccountInfoDto);
     }
     return flatPostsWithAccountInfoDto;
   }
@@ -90,14 +92,24 @@ export class FlatPostService {
   async findFlatPostById(flatId: number, userId: string): Promise<FlatPost> {
     const flatPost = await this.prisma.flatPost.findUnique({
       where: { id: flatId },
+      include: {
+        preferredUniversities: true,
+        undesirableUniversities: true
+      },
       rejectOnNotFound:
         () => {
-          throw new HttpException("Flat not found", HttpStatus.NOT_FOUND);
+          throw new NotFoundException("Flat not found");
         }
     });
     if (flatPost.authorId != userId)
-      throw new HttpException("Request was not sent by the author of flat", HttpStatus.FORBIDDEN);
+      throw new ForbiddenException("Request was not sent by the author of flat");
     return flatPost;
+  }
+
+  async findFlatPostsByUserId(userId: string): Promise<FlatPost[]> {
+    return await this.prisma.flatPost.findMany({
+      where: { authorId: userId }
+    });
   }
 
   async changeFlatPost(flatPostDto: FlatPostDto, flatId: number, userId: string): Promise<FlatPost> {

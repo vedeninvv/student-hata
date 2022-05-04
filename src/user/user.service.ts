@@ -15,7 +15,8 @@ export class UserService {
         id: userId,
         account: {
           create: {
-            name: "User"
+            name: "User",
+            surname: "Userov"
           }
         }
       }
