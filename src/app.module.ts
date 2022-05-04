@@ -8,7 +8,9 @@ import { PrismaModule } from "./prisma/prisma.module";
 import { GenderModule } from "./gender/gender.module";
 import { UniversityModule } from "./university/university.module";
 import { AuthModule } from "./auth/auth.module";
-require('dotenv').config();
+import { ChatModule } from "./chat/chat.module";
+
+require("dotenv").config();
 
 @Module({
   imports: [UserModule, FlatPostModule, NeighborFormModule, PrismaModule, GenderModule, UniversityModule,
@@ -22,7 +24,8 @@ require('dotenv').config();
         apiBasePath: process.env.API_BASE_PATH,
         websiteBasePath: process.env.WEBSITE_BASE_PATH
       }
-    })],
+    }),
+    ChatModule],
   controllers: [
     AppController
   ],
