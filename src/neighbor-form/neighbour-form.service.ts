@@ -79,10 +79,17 @@ export class NeighbourFormService {
     for (let i = 0; i < neighbourForms.length; i++) {
       const neighbourForm = neighbourForms[i];
       const account = await this.userService.getAccountByUserId(neighbourForm.userId);
-      const gender = await this.genderService.getGenderById(account.genderId);
-      let preferredGendersString = "";
-      for (let preferredGender in neighbourForm.preferredGenders) {
-        preferredGendersString += (await this.genderService.getGenderById(Number(preferredGender))).genderName + " ";
+      let gender;
+      let preferredGendersString;
+      if (account.filled) {
+        gender = await this.genderService.getGenderById(account.genderId);
+        let preferredGendersString = "";
+        for (let preferredGender in neighbourForm.preferredGenders) {
+          preferredGendersString += (await this.genderService.getGenderById(Number(preferredGender))).genderName + " ";
+        }
+      } else {
+        gender = { genderName: "Не задано" };
+        preferredGendersString = "Не задано";
       }
       let neighbourFormWithAccountInfoDto = new NeighbourFormWithAccountInfoDto();
       neighbourFormWithAccountInfoDto.name = account.name;
