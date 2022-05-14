@@ -42,16 +42,12 @@ export class FlatPostService {
         undesirableUniversitiesString += (await this.universityService
           .getUniversityById(Number(undesirableUniversity))).name + " ";
       }
-      let flatPostWithAccountInfoDto = new FlatPostWithAccountInfoDto();
-      flatPostWithAccountInfoDto.address = flatPost.address;
-      flatPostWithAccountInfoDto.price = flatPost.price;
-      flatPostWithAccountInfoDto.maxPeople = flatPost.maxPeople;
-      flatPostWithAccountInfoDto.description = flatPost.description;
-      flatPostWithAccountInfoDto.requirements = flatPost.requirements;
-      flatPostWithAccountInfoDto.preferredUniversities = preferredUniversitiesString;
-      flatPostWithAccountInfoDto.undesirableUniversities = undesirableUniversitiesString;
-      flatPostWithAccountInfoDto.name = account.name;
-      flatPostWithAccountInfoDto.surname = account.surname;
+      let flatPostWithAccountInfoDto: FlatPostWithAccountInfoDto = {
+        ...flatPost,
+        ...account,
+        preferredUniversities: preferredUniversitiesString,
+        undesirableUniversities: undesirableUniversitiesString
+      };
       flatPostsWithAccountInfoDto.push(flatPostWithAccountInfoDto);
     }
     return flatPostsWithAccountInfoDto;
