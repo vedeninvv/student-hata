@@ -10,7 +10,6 @@ export class ChangeAccountDto {
   surname: string;
   @ApiProperty()
   @IsInt()
-  @IsPositive()
   genderId: number;
   @ApiProperty()
   @IsEmail()

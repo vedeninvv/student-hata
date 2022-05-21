@@ -23,7 +23,7 @@ export class NeighbourFormWithAccountInfoDto {
   @ApiProperty()
   preferredArea: string;
   @ApiProperty()
-  requirementsForNeighbor: string;
+  requirementsForNeighbour: string;
   @ApiProperty()
   aboutMyself: string;
   @ApiProperty()
