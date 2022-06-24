@@ -1,6 +1,6 @@
 # Student Hata
-### [Сервис](student-hata.herokuapp.com)
-### [API](student-hata.herokuapp.com/api)
+### [Сервис](http://student-hata.herokuapp.com/)
+### [API](http://student-hata.herokuapp.com//api)
 Сервис позволяет студентам искать сожителей и квартиры, хозяева которых готовы сдать квартиру в аренду нескольким
 студентам.
 
